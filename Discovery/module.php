@@ -40,13 +40,13 @@ class Discovery extends IPSModule
 
             $AddValue['create'] = [
                 [
-                    'moduleID'      => '{EE92367A-BB8B-494F-A4D2-FAD77290CCF4}',
+                    'moduleID'      => '{52399872-F02A-4BEB-ACA0-1F6AE04D9663}',
                     'configuration' => [
                         'Serialnumber' => $Bridge['serialNumber']
                     ]
                 ],
                 [
-                    'moduleID'      => '{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}',
+                    'moduleID'      => '{6786AF05-B089-4BD0-BABA-B2B864CF92E3}',
                     'configuration' => [
                         'Host' => $Bridge['IPv4']
                     ]

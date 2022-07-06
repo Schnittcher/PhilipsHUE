@@ -7,7 +7,8 @@ class RessourceModule extends IPSModule
     public function Create()
     {
         parent::Create();
-        $this->ConnectParent('{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}');
+        //$this->ConnectParent('{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}');
+        $this->ConnectParent('{6786AF05-B089-4BD0-BABA-B2B864CF92E3}');
 
         $this->RegisterPropertyString('DeviceID', '');
         $this->RegisterPropertyString('ResourceID', '');
