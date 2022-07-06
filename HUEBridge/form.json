@@ -1,0 +1,36 @@
+{
+  "elements": [{
+    "name": "Host",
+    "type": "ValidationTextBox",
+    "caption": "IP-Adresse der HUE Bridge"
+  },
+    {
+      "name": "UpdateInterval",
+      "type": "IntervalBox",
+      "caption": "Seconds"
+    }
+  ],
+  "actions":
+  [
+    { "type": "Button", "label": "Register IP-Symcon", "onClick": "PHUE_registerUser($id);" }
+  ],
+  "status": [
+    {
+      "code": 102,
+      "icon": "active",
+      "caption": "Registration complete"
+    },
+    { "code": 200,
+      "icon": "error",
+      "caption": "Registration complete, more Information in IP-Symcon Log"
+    },
+    { "code": 201,
+      "icon": "error",
+      "caption": "Invalid JSON"
+    },
+    { "code": 202,
+      "icon": "error",
+      "caption": "HUE Bridge unreachable"
+    }
+  ]  
+}

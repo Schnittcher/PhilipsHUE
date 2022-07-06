@@ -1,0 +1,12 @@
+{
+  "id": "{31F53ADE-EC84-55ED-901D-38C5EF0970C4}",
+  "author": "Kai Schnittcher",
+  "name": "Philips HUE",
+  "url": "https://deinsmarthome.info",
+  "compatibility": {
+    "version": "5.2"
+},
+  "version": "2.3.1",
+  "build": 0,
+  "date": 0
+}

@@ -1,0 +1,20 @@
+{
+  "id": "{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}",
+  "name": "HUEBridge",
+  "type": 2,
+  "vendor": "Philips",
+  "aliases": [
+    "Philips Hue Bridge"
+  ],
+  "parentRequirements": [
+    "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
+  ],
+  "childRequirements": [
+    "{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}"
+  ],
+  "implemented": [
+    "{03995C27-F41C-4E0C-85C9-099084294C3B}",
+    "{5A709184-B602-D394-227F-207611A33BDF}"
+  ],
+  "prefix": "PHUE"
+}

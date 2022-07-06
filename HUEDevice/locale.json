@@ -1,0 +1,41 @@
+{
+  "translations": {
+    "de": {
+      "State": "Status",
+      "Brightness": "Helligkeit",
+      "Scenes": "Szenen",
+      "Color": "Farbe",
+      "HUE Device ID": "HUE Geräte ID",
+      "Color Temperature": "Farbtemperatur",
+      "Color Temperature Kelvin": "Farbtemperatur Kelvin",
+      "Color Mode": "Farbmodus",
+      "Saturation": "Sättigung",
+      "Battery": "Batterie",
+      "Reachable": "Erreichbar",
+      "Yes": "Ja",
+      "No": "Nein",
+      "Dark": "Dunkel",
+      "Daylight": "Tageslicht",
+      "Lightlevel": "Lichtniveau",
+      "Presence": "Anwesenheit",
+      "Temperature": "Temperatur",
+      "Device Type": "Geräte Typ",
+      "Select a Device": "Wählen Sie ein Gerät",
+      "Light": "Licht",
+      "Group": "Gruppe",
+      "Sensor Type": "Sensor Typ",
+      "Select a Sensor Type": "Wählen Sie einen Sensortyp",
+      "Presence Sensor": "Anwesenheitssensor",
+      "Light Sensor": "Lichtsensor",
+      "Temperature Sensor": "Temperatursensor",
+      "Switch": "Schalter",
+      "Group State (Any on)" : "Gruppen Status (Eine an)",
+      "Update Scene Profile": "Szenenprofil aktualisieren",
+      "Sensor State": "Sensor Status",
+      "Color mode variable active": "Farbmodus Variable aktiv",
+      "Color variable active": "Farb Variable aktiv",
+      "Kelvin variable active": "Kelvin Variable aktiv",
+      "Saturation variable active": "Sättigungs Variable aktiv"
+    }
+  }
+}

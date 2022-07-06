@@ -1,0 +1,73 @@
+{
+  "elements": [
+    {
+      "type": "ValidationTextBox",
+      "name": "DeviceID",
+      "caption": "HUE Device ID"
+    },
+    {
+      "type": "ValidationTextBox",
+      "name": "ResourceID",
+      "caption": "HUE Resource ID"
+    },
+    {
+      "type": "List",
+      "name": "Variables",
+      "caption": "",
+      "add": false,
+      "delete": false,
+      "columns": [
+          {
+              "caption": "Ident",
+              "name": "Ident",
+              "visible": false,
+              "width": "0px",
+              "save": true
+          },
+          {
+              "caption": "Index",
+              "name": "Pos",
+              "width": "100px",
+              "save": true
+          },
+          {
+              "caption": "Name",
+              "name": "Name",
+              "width": "auto",
+              "save": true
+          },
+          {
+              "caption": "Type",
+              "name": "VarType",
+              "visible": false,
+              "width": "0px",
+              "save": true
+          },
+          {
+              "caption": "Profile",
+              "name": "Profile",
+              "visible": false,
+              "width": "0px",
+              "save": true
+          },
+          {
+              "caption": "Action",
+              "name": "Action",
+              "visible": false,
+              "width": "0px",
+              "save": true
+          },
+          {
+              "caption": "Active",
+              "name": "Keep",
+              "width": "75px",
+              "edit": {
+                  "caption": "Active",
+                  "type": "CheckBox"
+              }
+          }
+      ],
+      "values": []
+  }
+  ]
+}

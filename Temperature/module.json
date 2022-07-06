@@ -1,0 +1,11 @@
+{
+  "id": "{93B25D1B-5630-4A3E-8BA9-FD2B4D4177F0}",
+  "name": "Temperature",
+  "type": 3,
+  "vendor": "Philips",
+  "aliases": ["Philips Hue Temperature"],
+  "parentRequirements": ["{03995C27-F41C-4E0C-85C9-099084294C3B}"],
+  "childRequirements": [],
+  "implemented": ["{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}"],
+  "prefix": "PHUE"
+}

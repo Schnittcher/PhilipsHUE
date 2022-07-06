@@ -1,0 +1,39 @@
+{
+  "elements":
+  [
+    {"type": "ValidationTextBox", "name": "HUEDeviceID", "caption": "HUE Device ID"},
+    { "type": "Select", "name": "DeviceType", "caption": "Device Type", "onChange": "PHUE_ReloadConfigurationFormDeviceType($id,$DeviceType);",
+      "options": [
+        { "caption": "Select a Device", "value": "" },
+        { "caption": "Light", "value": "lights" },
+        { "caption": "Plug", "value": "plugs" },
+        { "caption": "Sensor", "value": "sensors" },
+        { "caption": "Group", "value": "groups" }
+      ]
+    },
+    { "type": "Select", "name": "SensorType", "caption": "Sensor Type", "visible": "false",
+      "options": [
+        { "caption": "Select a Sensor Type", "value": "" },
+        { "caption": "Daylight", "value": "Daylight" },
+        { "caption": "Presence Sensor", "value": "ZLLPresence" },
+        { "caption": "Light Sensor", "value": "ZLLLightLevel" },
+        { "caption": "Temperature Sensor", "value": "ZLLTemperature" },
+        { "caption": "Switch", "value": "ZLLSwitch" },
+        { "caption": "Friends of HUE Switch", "value": "ZGPSwitch" },
+        { "caption": "CLIPGenericStatus", "value": "CLIPGenericStatus" }
+      ]
+    },
+    { "type": "CheckBox", "name": "ColorModeActive", "caption": "Color mode variable active", "visible": false },
+    { "type": "CheckBox", "name": "ColorActive", "caption": "Color variable active", "visible": false },
+    { "type": "CheckBox", "name": "KelvinActive", "caption": "Kelvin variable active", "visible": false },
+    { "type": "CheckBox", "name": "SaturationActive", "caption": "Saturation variable active", "visible": false },
+    { "type": "CheckBox", "name": "GroupStateAnyOn", "caption": "Group State (Any on)", "visible": false }
+  ],
+  "actions": [
+    {
+      "type": "Button",
+      "caption": "Update Scene Profile",
+      "onClick": "PHUE_UpdateSceneProfile($id);"
+    }
+]
+}
