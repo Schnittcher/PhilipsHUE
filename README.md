@@ -19,7 +19,6 @@
 
 * mindestens IPS Version 6.3
 
-
 ## 2. Enthaltene Module
 
 * Bridge
