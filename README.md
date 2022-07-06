@@ -34,7 +34,7 @@
 
 
 ## 3. Installation
-Über den IP-Symcon Module Store. (Beta Version Philpis HUE V2)
+Über den IP-Symcon Module Store. (Beta Version Philips HUE V2)
 
 ## 4. Konfiguration in IP-Symcon
 
