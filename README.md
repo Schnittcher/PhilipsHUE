@@ -5,7 +5,7 @@
 
 # PhilipsHUE
    Dieses Modul stellt eine Verbindung zur der Philips HUE Bridge her, um HUE Geräte in IP-Symcon zu integrieren.
-   Dieses Modul basiert auf der neuen API von Philips HUE, welches als Rückkanal SSE (Server-Sent Events) benutzt.
+   Das Modul basiert auf der neuen API von Philips HUE, welches als Rückkanal SSE (Server-Sent Events) benutzt.
  
    ## Inhaltverzeichnis
    1. [Voraussetzungen](#1-voraussetzungen)
