@@ -1,8 +1,12 @@
 {
   "translations": {
     "de": {
-      "Enabled": "Aktiv",
-      "Motion": "Bewegung"
+      "State": "Status",
+      "Brightness": "Helligkeit",
+      "Color": "Farbe",
+      "Color Temperature": "Farbtemperatur",
+      "Transition": "Übergang",
+      "Variables": "Variablen"
     }
   }
 }

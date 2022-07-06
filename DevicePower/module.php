@@ -16,10 +16,10 @@ class DevicePower extends RessourceModule
         $Data = json_decode($JSONString, true)['Data'][0];
 
         if (array_key_exists('power_state', $Data)) {
-            if (array_key_exists('battery_level', $Data)) {
+            if (array_key_exists('battery_level', $Data['power_state'])) {
                 $this->SetValue('battery_level', $Data['power_state']['battery_level']);
             }
-            if (array_key_exists('battery_state', $Data)) {
+            if (array_key_exists('battery_state', $Data['power_state'])) {
                 $this->SetValue('battery_state', $Data['power_state']['battery_state']);
             }
         }

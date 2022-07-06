@@ -1,11 +1,11 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../libs/DebugHelper.php';
+eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
 
-class HUEDiscovery extends IPSModule
+class Discovery extends IPSModule
 {
-    use DebugHelper;
+    use \PhilipsHUE\DebugHelper;
 
     public function Create()
     {
@@ -113,18 +113,5 @@ class HUEDiscovery extends IPSModule
             }
         }
         return 0;
-    }
-
-    private function parseHeader(string $Data): array
-    {
-        $Lines = explode("\r\n", $Data);
-        array_shift($Lines);
-        array_pop($Lines);
-        $Header = [];
-        foreach ($Lines as $Line) {
-            $line_array = explode(':', $Line);
-            $Header[strtoupper(trim(array_shift($line_array)))] = trim(implode(':', $line_array));
-        }
-        return $Header;
     }
 }

@@ -26,7 +26,9 @@ class Motion extends RessourceModule
         $Data = json_decode($JSONString, true)['Data'][0];
 
         if (array_key_exists('motion', $Data)) {
-            $this->SetValue('Motion', $Data['motion']['motion']);
+            if (array_key_exists('motion', $Data['motion'])) {
+                $this->SetValue('Motion', $Data['motion']['motion']);
+            }
         }
         if (array_key_exists('enabled', $Data)) {
             $this->SetValue('Enabled', $Data['enabled']);

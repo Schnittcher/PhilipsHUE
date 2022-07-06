@@ -28,7 +28,9 @@ class Temperature extends RessourceModule
             $this->SetValue('status', $Data['status']);
         }
         if (array_key_exists('temperature', $Data)) {
-            $this->SetValue('temperature', $Data['temperature']['temperature']);
+            if (array_key_exists('temperature', $Data['temperature'])) {
+                $this->SetValue('temperature', $Data['temperature']['temperature']);
+            }
         }
     }
 }

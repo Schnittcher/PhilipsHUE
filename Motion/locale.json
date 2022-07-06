@@ -2,7 +2,8 @@
   "translations": {
     "de": {
       "Enabled": "Aktiv",
-      "Motion": "Bewegung"
+      "Motion": "Bewegung",
+      "Variables": "Variablen"
     }
   }
 }

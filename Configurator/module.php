@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class HUEConfigurator extends IPSModule
+class Configurator extends IPSModule
 {
     const RESOURCES =
         [
@@ -34,7 +34,13 @@ class HUEConfigurator extends IPSModule
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
 
-        $Devices = $this->getDevices()['data'];
+        $Devices = $this->getDevices();
+
+        if (!array_key_exists('data', $Devices)) {
+            $Devices = [];
+        } else {
+            $Devices = $Devices['data'];
+        }
 
         $servicesID = 3000;
 
@@ -50,7 +56,6 @@ class HUEConfigurator extends IPSModule
                 'ModelID'               => $Device['product_data']['model_id'],
                 'Manufacturername'      => $Device['product_data']['manufacturer_name'],
                 'Productname'           => $Device['product_data']['product_name'],
-                'instanceID'            => 0
             ];
             foreach ($Device['services'] as $serviceKey => $Service) {
                 $servicesID++;
@@ -64,12 +69,15 @@ class HUEConfigurator extends IPSModule
                     'ModelID'               => '',
                     'Manufacturername'      => '',
                     'Productname'           => '',
+                    'instanceID'            => $this->getInstanceID($Device['id'], $Service['rid']),
                     'create'                => [
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
                             'DeviceID'      => strval($Device['id']),
                             'ResourceID'    => strval($Service['rid']),
-                        ]
+                        ],
+                        'name'     => $Device['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
+                        'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
                     ]
                 ];
             }
@@ -111,6 +119,19 @@ class HUEConfigurator extends IPSModule
         }
 
         return array_reverse($path);
+    }
+
+    private function getInstanceID($dID, $rID)
+    {
+        foreach (self::RESOURCES as $GUID) {
+            $IDs = IPS_GetInstanceListByModuleID($GUID);
+            foreach ($IDs as $id) {
+                if ((strtolower(IPS_GetProperty($id, 'DeviceID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
+                    return $id;
+                }
+            }
+        }
+        return 0;
     }
 
     private function getModuleIDByType($type)

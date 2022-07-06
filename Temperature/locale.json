@@ -2,7 +2,8 @@
   "translations": {
     "de": {
       "Enabled": "Aktiv",
-      "Temperature": "Temperatur"
+      "Temperature": "Temperatur",
+      "Variables": "Variablen"
     }
   }
 }

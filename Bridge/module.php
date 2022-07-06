@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class HUEBridge extends IPSModule
+class Bridge extends IPSModule
 {
     public function Create()
     {
@@ -10,7 +10,9 @@ class HUEBridge extends IPSModule
         parent::Create();
         $this->RegisterPropertyString('Host', '');
         $this->RegisterAttributeString('User', '');
-        $this->ConnectParent('{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}');
+        $this->RequireParent('{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}');
+
+        $this->RegisterMessage(IPS_GetInstance($this->InstanceID)['ConnectionID'], IM_CHANGESTATUS);
     }
 
     public function ApplyChanges()
@@ -26,6 +28,19 @@ class HUEBridge extends IPSModule
         }
     }
 
+    public function RegisterServerEvents()
+    {
+        $url = 'https://' . $this->ReadPropertyString('Host') . '/eventstream/clip/v2';
+        $this->SendDebug('RegisterServerEvents :: url', $url, 0);
+        $parent = IPS_GetInstance($this->InstanceID)['ConnectionID'];
+        IPS_SetProperty($parent, 'URL', $url);
+        IPS_SetProperty($parent, 'VerifyPeer', false);
+        IPS_SetProperty($parent, 'VerifyHost', false);
+        IPS_SetProperty($parent, 'Active', true);
+        IPS_SetProperty($parent, 'Headers', json_encode([['Name' => 'Accept', 'Value' => 'text/event-stream'], ['Name' => 'hue-application-key', 'Value' => $this->ReadAttributeString('User')]]));
+        IPS_ApplyChanges($parent);
+    }
+
     public function ForwardData($JSONString)
     {
         $this->SendDebug(__FUNCTION__, $JSONString, 0);
@@ -36,8 +51,8 @@ class HUEBridge extends IPSModule
                 $result = $this->getDevices();
                 break;
             case 'setResourceData':
-                IPS_LogMessage('test',$data['Buffer']['value']);
-                $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint']. '/'. $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
+                IPS_LogMessage('test', $data['Buffer']['value']);
+                $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
                 break;
             default:
             $this->SendDebug(__FUNCTION__, 'Invalid Command: ' . $data->Buffer->Command, 0);
@@ -61,10 +76,11 @@ class HUEBridge extends IPSModule
     public function registerUser()
     {
         $params['devicetype'] = 'Symcon';
-        $result = $this->sendRequest('', '', $params, 'POST');
+        $result = $this->sendRequest('', '', json_encode($params), 'POST');
         if (@isset($result[0]->success->username)) {
             $this->SendDebug('Register User', 'OK: ' . $result[0]->success->username, 0);
             $this->WriteAttributeString('User', $result[0]->success->username);
+            $this->RegisterServerEvents();
             $this->SetStatus(102);
         } else {
             $this->SendDebug(__FUNCTION__ . 'Pairing failed', json_encode($result), 0);

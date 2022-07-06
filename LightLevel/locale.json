@@ -2,7 +2,8 @@
   "translations": {
     "de": {
       "Enabled": "Aktiv",
-      "Light Level": "Lichtpegel"
+      "Light Level": "Lichtpegel",
+      "Variables": "Variablen"
     }
   }
 }

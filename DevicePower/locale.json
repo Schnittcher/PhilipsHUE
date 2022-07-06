@@ -2,7 +2,8 @@
   "translations": {
     "de": {
       "Battery Level": "Batteriestand",
-      "Battery State": "Batteriezustand"
+      "Battery State": "Batteriezustand",
+      "Variables": "Variablen"
     }
   }
 }

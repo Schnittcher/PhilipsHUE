@@ -1,7 +1,13 @@
 {
   "translations": {
     "de": {
-      "Last Event": "Letztes Ereignis"
+      "Last Event": "Letztes Ereignis",
+      "Initial Press": "Erster Tastendruck",
+      "Repeat": "Wiederholen",
+      "Short Release": "Kurzer Tastendruck",
+      "Long Release": "Langer Tastendruck",
+      "Double Short Release": "Doppelter kurzer Tastendruck",
+      "Variables": "Variablen"
     }
   }
 }

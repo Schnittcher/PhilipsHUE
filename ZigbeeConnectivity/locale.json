@@ -1,7 +1,12 @@
 {
   "translations": {
     "de": {
-      "Status": "Status"
+      "Status": "Status",
+      "Connected": "Verbunden",
+      "Disconnected": "Gretennt",
+      "Connectivity Issue": "Konnektivitätsproblem",
+      "Inidirectional Incoming": "Inidirektional Eingehend",
+      "Variables": "Variablen"
     }
   }
 }
