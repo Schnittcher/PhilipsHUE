@@ -8,6 +8,9 @@ eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DI
 
 class Light extends RessourceModule
 {
+
+    const SERVICE = 'light';
+
     use \PhilipsHUE\DebugHelper;
     use \PhilipsHUE\ColorHelper;
     use \PhilipsHUE\VariableProfileHelper;
@@ -54,12 +57,8 @@ class Light extends RessourceModule
             }
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('on', $Data)) {
             if (array_key_exists('on', $Data)) {
                 $this->SetValue('on', $Data['on']['on']);

@@ -5,16 +5,15 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class DevicePower extends RessourceModule
 {
+    const SERVICE = 'device_power';
+
     public static $Variables = [
         ['battery_level', 'Battery Level', VARIABLETYPE_INTEGER, '~Battery.100', false, true],
         ['battery_state', 'Battery State', VARIABLETYPE_STRING, '', false, true],
     ];
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('power_state', $Data)) {
             if (array_key_exists('battery_level', $Data['power_state'])) {
                 $this->SetValue('battery_level', $Data['power_state']['battery_level']);

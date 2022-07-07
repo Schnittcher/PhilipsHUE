@@ -5,6 +5,8 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class Temperature extends RessourceModule
 {
+    const SERVICE = 'temperature';
+
     public static $Variables = [
         ['status', 'Status', VARIABLETYPE_STRING, '', false, true],
         ['temperature', 'Temperature', VARIABLETYPE_FLOAT, '~Temperature', false, true]
@@ -19,11 +21,8 @@ class Temperature extends RessourceModule
             }
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('status', $Data)) {
             $this->SetValue('status', $Data['status']);
         }

@@ -7,6 +7,7 @@ eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DI
 class Button extends RessourceModule
 {
     use \PhilipsHUE\VariableProfileHelper;
+    const SERVICE = 'button';
 
     public static $Variables = [
         ['last_event', 'Last Event', VARIABLETYPE_STRING, 'PhilipsHUE.LastEvent', false, true]
@@ -25,11 +26,8 @@ class Button extends RessourceModule
         ]);
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('button', $Data)) {
             if (array_key_exists('last_event', $Data['button'])) {
                 $this->SetValue('last_event', $Data['button']['last_event']);

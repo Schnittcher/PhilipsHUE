@@ -7,6 +7,7 @@ eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DI
 class ZigbeeConnectivity extends RessourceModule
 {
     use \PhilipsHUE\VariableProfileHelper;
+    const SERVICE = 'zigbee_connectivity';
 
     public static $Variables = [
         ['State', 'Status', VARIABLETYPE_STRING, 'PhilipsHUE.ZigbeeState', false, true]
@@ -24,11 +25,8 @@ class ZigbeeConnectivity extends RessourceModule
         ]);
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('status', $Data)) {
             $this->SetValue('Status', $Data['status']);
         }

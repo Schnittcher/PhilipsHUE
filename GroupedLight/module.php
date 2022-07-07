@@ -11,6 +11,7 @@ class GroupedLight extends RessourceModule
     use \PhilipsHUE\DebugHelper;
     use \PhilipsHUE\ColorHelper;
     use \PhilipsHUE\VariableProfileHelper;
+    const SERVICE = 'grouped_light';
 
     public static $Variables = [
         ['on', 'State', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
@@ -55,12 +56,8 @@ class GroupedLight extends RessourceModule
             }
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('on', $Data)) {
             if (array_key_exists('on', $Data)) {
                 $this->SetValue('on', $Data['on']['on']);

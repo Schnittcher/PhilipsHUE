@@ -72,6 +72,23 @@ class RessourceModule extends IPSModule
             IPS_ApplyChanges($this->InstanceID);
             return;
         }
+        $this->updateState();
+    }
+
+    public function updateState()
+    {
+        if ($this->ReadPropertyString('ResourceID') != '') {
+            $result =json_decode($this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE),true);
+            $Data = $result['data'][0];
+            $this->mapResultsToValues($Data);
+        }
+    }
+
+    public function ReceiveData($JSONString)
+    {
+        $this->SendDebug('JSON', $JSONString, 0);
+        $Data = json_decode($JSONString, true)['Data'][0];
+        $this->mapResultsToValues($Data);
     }
 
     protected function SetValue($Ident, $Value)
@@ -99,5 +116,24 @@ class RessourceModule extends IPSModule
         $this->SendDebug(__FUNCTION__, $Data, 0);
         $result = $this->SendDataToParent($Data);
         $this->SendDebug(__FUNCTION__, $result, 0);
+    }
+
+    protected function getData(string $rid, string $endpoint)
+    {
+        $Data['DataID'] = '{03995C27-F41C-4E0C-85C9-099084294C3B}';
+        $Buffer['Command'] = 'getResourceData';
+        $Buffer['rid'] = $rid;
+        $Buffer['endpoint'] = $endpoint;
+        $Data['Buffer'] = $Buffer;
+        $Data = json_encode($Data);
+
+        if (!$this->HasActiveParent()) {
+            return '{"data":[{}]}';
+        }
+
+        $this->SendDebug(__FUNCTION__ . ' :: $Data', $Data, 0);
+        $result = $this->SendDataToParent($Data);
+        $this->SendDebug(__FUNCTION__ . ' :: $result', $result, 0);
+        return $result;
     }
 }

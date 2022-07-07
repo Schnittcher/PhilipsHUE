@@ -5,6 +5,8 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class LightLevel extends RessourceModule
 {
+    const SERVICE = 'light_level';
+
     public static $Variables = [
         ['enabled', 'Enabled', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
         ['light_level', 'Light Level', VARIABLETYPE_INTEGER, '~Illumination', false, true]
@@ -19,12 +21,8 @@ class LightLevel extends RessourceModule
             }
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('light', $Data)) {
             if (array_key_exists('light_level', $Data['light'])) {
                 $this->SetValue('light_level', $Data['light']['light_level']);

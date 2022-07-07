@@ -5,6 +5,8 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class Motion extends RessourceModule
 {
+    const SERVICE = 'motion';
+
     public static $Variables = [
         ['motion', 'Motion', VARIABLETYPE_BOOLEAN, '~Motion', false, true],
         ['enabled', 'Enabled', VARIABLETYPE_BOOLEAN, '~Switch', true, true]
@@ -19,12 +21,8 @@ class Motion extends RessourceModule
             }
     }
 
-    public function ReceiveData($JSONString)
+    protected function mapResultsToValues(array $Data)
     {
-        $this->SendDebug('JSON', $JSONString, 0);
-
-        $Data = json_decode($JSONString, true)['Data'][0];
-
         if (array_key_exists('motion', $Data)) {
             if (array_key_exists('motion', $Data['motion'])) {
                 $this->SetValue('Motion', $Data['motion']['motion']);

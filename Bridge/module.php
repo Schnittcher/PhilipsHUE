@@ -54,8 +54,10 @@ class Bridge extends IPSModule
                 $result = $this->getRooms();
                 break;
             case 'setResourceData':
-                IPS_LogMessage('test', $data['Buffer']['value']);
                 $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
+                break;
+            case 'getResourceData':
+                $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], '', 'GET');
                 break;
             default:
             $this->SendDebug(__FUNCTION__, 'Invalid Command: ' . $data->Buffer->Command, 0);
