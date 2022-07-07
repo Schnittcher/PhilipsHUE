@@ -73,9 +73,6 @@ class Bridge extends IPSModule
         foreach ($HUEData as $key => $Data) {
             $Data['DataID'] = '{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}';
             $Data['Data'] = $Data['data'];
-    
-            IPS_LogMessage('test',print_r($Data,true));
-
             $this->SendDataToChildren(json_encode($Data));
         }
     }
