@@ -22,15 +22,16 @@
 ## 2. Enthaltene Module
 
 * Bridge
-* Configurator
+* DeviceConfigurator
 * DevicePower
 * Discovery
+* GroupedLight
 * Light
 * LightLevel
 * Motion
+* RoomConfigurator
 * Temperature
 * ZigbeeConnectivity
-
 
 ## 3. Installation
 Über den IP-Symcon Module Store. (Beta Version Philips HUE V2)

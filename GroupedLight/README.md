@@ -1,5 +1,5 @@
-# Light
-   Diese Instanz stellt den Service Light bereit, welcher eine Lampe in IP-Symcon darstellen kann.
+# GroupedLight
+   Diese Instanz stellt den Service GroupedLight bereit, welcher eine Gruppe von Lampen in IP-Symcon darstellen kann.
      
    ## Inhaltverzeichnis
    1. [Konfiguration](#1-konfiguration)
@@ -9,7 +9,7 @@
    
    Feld | Beschreibung
    ------------ | ----------------
-   HUE Device ID | Hier wird die ID der HUE Devices eingetragen. (Automatisch über den Konfigurator)
+   HUE Room ID | Hier wird die ID der HUE Räume eingetragen. (Automatisch über den Konfigurator)
    HUE Resource ID | Hier wird die ID der HUE Ressource eingetragen. (Automatisch über den Konfigurator)
    Variablen | Hier können einzelne Variablen deaktiviert werden.
 

@@ -1,4 +1,4 @@
-# Configurator
+# DeviceConfigurator
    Über diese Instanz können alle Geräte/Resourcen angelegt werden.
      
    ## Inhaltverzeichnis
