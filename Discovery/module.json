@@ -3,7 +3,7 @@
   "name": "Discovery",
   "type": 5,
   "vendor": "Philips",
-  "aliases": ["Philips Hue Discovery"],
+  "aliases": ["Philips Hue Discovery V2"],
   "parentRequirements": [],
   "childRequirements": [],
   "implemented": [],

@@ -4,7 +4,7 @@
   "type": 2,
   "vendor": "Philips",
   "aliases": [
-    "Philips Hue Bridge"
+    "Philips Hue Bridge V2"
   ],
   "parentRequirements": [
     "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
