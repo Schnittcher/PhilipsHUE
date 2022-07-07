@@ -43,7 +43,7 @@ class RoomConfigurator extends IPSModule
         foreach ($Rooms as $key => $Room) {
             $Values[] = [
                 'id'                    => $key + 1,
-                'RoomID'              => $Room['id'],
+                'RoomID'                => $Room['id'],
                 'DisplayName'           => $Room['metadata']['name'],
                 'name'                  => $Room['metadata']['name'],
                 'Type'                  => $Room['type'],
@@ -53,7 +53,7 @@ class RoomConfigurator extends IPSModule
                 $Values[] = [
                     'parent'                => $key + 1,
                     'id'                    => $servicesID,
-                    'RoomID'              => $Service['rid'],
+                    'RoomID'                => $Service['rid'],
                     'DisplayName'           => '',
                     'name'                  => '',
                     'Type'                  => $Service['rtype'],
@@ -61,7 +61,7 @@ class RoomConfigurator extends IPSModule
                     'create'                => [
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
-                            'RoomID'      => strval($Room['id']),
+                            'RoomID'        => strval($Room['id']),
                             'ResourceID'    => strval($Service['rid']),
                         ],
                         'name'     => $Room['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
