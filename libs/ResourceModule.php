@@ -72,13 +72,13 @@ class RessourceModule extends IPSModule
             IPS_ApplyChanges($this->InstanceID);
             return;
         }
-        $this->updateState();
+        $this->updateValues();
     }
 
-    public function updateState()
+    public function updateValues()
     {
         if ($this->ReadPropertyString('ResourceID') != '') {
-            $result =json_decode($this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE),true);
+            $result = json_decode($this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE), true);
             $Data = $result['data'][0];
             $this->mapResultsToValues($Data);
         }
