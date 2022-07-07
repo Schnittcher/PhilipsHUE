@@ -28,7 +28,7 @@ class ZigbeeConnectivity extends RessourceModule
     protected function mapResultsToValues(array $Data)
     {
         if (array_key_exists('status', $Data)) {
-            $this->SetValue('Status', $Data['status']);
+            $this->SetValue('State', $Data['status']);
         }
     }
 }
