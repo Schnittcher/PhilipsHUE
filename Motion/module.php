@@ -25,7 +25,7 @@ class Motion extends RessourceModule
     {
         if (array_key_exists('motion', $Data)) {
             if (array_key_exists('motion', $Data['motion'])) {
-                $this->SetValue('Motion', $Data['motion']['motion']);
+                $this->SetValue('motion', $Data['motion']['motion']);
             }
         }
         if (array_key_exists('enabled', $Data)) {
