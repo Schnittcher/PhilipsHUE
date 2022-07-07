@@ -1,9 +1,9 @@
 {
-  "id": "{52399872-F02A-4BEB-ACA0-1F6AE04D9663}",
-  "name": "Configurator",
-  "type": 4,
+  "id": "{6324AC4A-330C-4CB2-9281-12EECB450024}",
+  "name": "GroupedLight",
+  "type": 3,
   "vendor": "Philips",
-  "aliases": ["Philips Hue Configurator V2"],
+  "aliases": ["Philips Hue Grouped Light"],
   "parentRequirements": ["{03995C27-F41C-4E0C-85C9-099084294C3B}"],
   "childRequirements": [],
   "implemented": ["{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}"],

@@ -1,0 +1,12 @@
+{
+  "translations": {
+    "de": {
+      "State": "Status",
+      "Brightness": "Helligkeit",
+      "Color": "Farbe",
+      "Color Temperature": "Farbtemperatur",
+      "Transition": "Übergang",
+      "Variables": "Variablen"
+    }
+  }
+}

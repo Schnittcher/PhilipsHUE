@@ -11,6 +11,7 @@ class RessourceModule extends IPSModule
         $this->ConnectParent('{6786AF05-B089-4BD0-BABA-B2B864CF92E3}');
 
         $this->RegisterPropertyString('DeviceID', '');
+        $this->RegisterPropertyString('RoomID', '');
         $this->RegisterPropertyString('ResourceID', '');
 
         $Variables = [];

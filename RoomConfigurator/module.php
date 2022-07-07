@@ -2,17 +2,11 @@
 
 declare(strict_types=1);
 
-class Configurator extends IPSModule
+class RoomConfigurator extends IPSModule
 {
     const RESOURCES =
         [
-            'motion'                 => '{F8DF1FCA-CA5B-4099-935C-3E563BCC2BE0}',
-            'zigbee_connectivity'    => '{88465699-1C57-429B-924A-CAA56F45762F}',
-            'light_level'            => '{F8EAC53D-5442-405B-99EC-394046D07141}',
-            'temperature'            => '{93B25D1B-5630-4A3E-8BA9-FD2B4D4177F0}',
-            'device_power'           => '{B86C3E14-09CC-4EF0-A28C-AA198FC25C51}',
-            'button'                 => '{2D52B78D-0A13-485B-8B98-C2E0A6BA2EF1}',
-            'light'                  => '{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}'
+            'grouped_light'                 => '{6324AC4A-330C-4CB2-9281-12EECB450024}'
         ];
 
     public function Create()
@@ -34,49 +28,43 @@ class Configurator extends IPSModule
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
 
-        $Devices = $this->getDevices();
+        $Rooms = $this->getRooms();
 
-        if (!array_key_exists('data', $Devices)) {
-            $Devices = [];
+        if (!array_key_exists('data', $Rooms)) {
+            $Rooms = [];
         } else {
-            $Devices = $Devices['data'];
+            $Rooms = $Rooms['data'];
         }
 
         $servicesID = 3000;
 
         $Values = [];
         $AddValue = [];
-        foreach ($Devices as $key => $Device) {
+        foreach ($Rooms as $key => $Room) {
             $Values[] = [
                 'id'                    => $key + 1,
-                'DeviceID'              => $Device['id'],
-                'DisplayName'           => $Device['metadata']['name'],
-                'name'                  => $Device['metadata']['name'],
-                'Type'                  => $Device['type'],
-                'ModelID'               => $Device['product_data']['model_id'],
-                'Manufacturername'      => $Device['product_data']['manufacturer_name'],
-                'Productname'           => $Device['product_data']['product_name'],
+                'RoomID'              => $Room['id'],
+                'DisplayName'           => $Room['metadata']['name'],
+                'name'                  => $Room['metadata']['name'],
+                'Type'                  => $Room['type'],
             ];
-            foreach ($Device['services'] as $serviceKey => $Service) {
+            foreach ($Room['services'] as $serviceKey => $Service) {
                 $servicesID++;
                 $Values[] = [
                     'parent'                => $key + 1,
                     'id'                    => $servicesID,
-                    'DeviceID'              => $Service['rid'],
+                    'RoomID'              => $Service['rid'],
                     'DisplayName'           => '',
                     'name'                  => '',
                     'Type'                  => $Service['rtype'],
-                    'ModelID'               => '',
-                    'Manufacturername'      => '',
-                    'Productname'           => '',
-                    'instanceID'            => $this->getInstanceID($Device['id'], $Service['rid']),
+                    'instanceID'            => $this->getInstanceID($Room['id'], $Service['rid']),
                     'create'                => [
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
-                            'DeviceID'      => strval($Device['id']),
+                            'RoomID'      => strval($Room['id']),
                             'ResourceID'    => strval($Service['rid']),
                         ],
-                        'name'     => $Device['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
+                        'name'     => $Room['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
                         'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
                     ]
                 ];
@@ -86,13 +74,13 @@ class Configurator extends IPSModule
         return json_encode($Form);
     }
 
-    private function getDevices()
+    private function getRooms()
     {
         $Data = [];
         $Buffer = [];
 
         $Data['DataID'] = '{03995C27-F41C-4E0C-85C9-099084294C3B}';
-        $Buffer['Command'] = 'getDevices';
+        $Buffer['Command'] = 'getRooms';
         $Buffer['Params'] = '';
         $Data['Buffer'] = $Buffer;
         $Data = json_encode($Data);
@@ -125,7 +113,7 @@ class Configurator extends IPSModule
         foreach (self::RESOURCES as $GUID) {
             $IDs = IPS_GetInstanceListByModuleID($GUID);
             foreach ($IDs as $id) {
-                if ((strtolower(IPS_GetProperty($id, 'DeviceID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
+                if ((strtolower(IPS_GetProperty($id, 'RoomID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
                     return $id;
                 }
             }
@@ -135,6 +123,6 @@ class Configurator extends IPSModule
 
     private function getModuleIDByType($type)
     {
-        return isset(self::RESOURCES[$type]) ? self::RESOURCES[$type] : self::RESOURCES['motion']; //TODO Default
+        return isset(self::RESOURCES[$type]) ? self::RESOURCES[$type] : self::RESOURCES['grouped_light']; //TODO Default
     }
 }

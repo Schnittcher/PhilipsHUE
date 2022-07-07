@@ -50,6 +50,9 @@ class Bridge extends IPSModule
             case 'getDevices':
                 $result = $this->getDevices();
                 break;
+            case 'getRooms':
+                $result = $this->getRooms();
+                break;
             case 'setResourceData':
                 IPS_LogMessage('test', $data['Buffer']['value']);
                 $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
@@ -67,10 +70,14 @@ class Bridge extends IPSModule
         $data = json_decode($JSONString, true);
         $HUEData = json_decode($data['Data'], true);
 
-        $Data['DataID'] = '{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}';
-        $Data['Data'] = $HUEData[0]['data'];
+        foreach ($HUEData as $key => $Data) {
+            $Data['DataID'] = '{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}';
+            $Data['Data'] = $Data['data'];
+    
+            IPS_LogMessage('test',print_r($Data,true));
 
-        $this->SendDataToChildren(json_encode($Data));
+            $this->SendDataToChildren(json_encode($Data));
+        }
     }
 
     public function registerUser()
@@ -92,6 +99,11 @@ class Bridge extends IPSModule
     public function getDevices()
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/device', '', 'GET');
+    }
+
+    public function getRooms()
+    {
+        return $this->sendRequest($this->ReadAttributeString('User'), 'resource/room', '', 'GET');
     }
 
     private function sendRequest(string $User, string $endpoint, string $params, string $method = 'GET')
