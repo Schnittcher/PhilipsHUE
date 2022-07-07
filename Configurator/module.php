@@ -83,7 +83,6 @@ class Configurator extends IPSModule
             }
         }
         $Form['actions'][0]['values'] = $Values;
-        IPS_LogMessage('Form', print_r($Form, true));
         return json_encode($Form);
     }
 
