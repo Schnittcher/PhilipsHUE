@@ -61,7 +61,7 @@ class HUERoomConfigurator extends IPSModule
                     'create'                => [
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
-                            'RoomID'        => strval($Room['id']),
+                            'RoomZoneID'        => strval($Room['id']),
                             'ResourceID'    => strval($Service['rid']),
                         ],
                         'name'     => $Room['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
@@ -113,7 +113,7 @@ class HUERoomConfigurator extends IPSModule
         foreach (self::RESOURCES as $GUID) {
             $IDs = IPS_GetInstanceListByModuleID($GUID);
             foreach ($IDs as $id) {
-                if ((strtolower(IPS_GetProperty($id, 'RoomID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
+                if ((strtolower(IPS_GetProperty($id, 'RoomZoneID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
                     return $id;
                 }
             }
