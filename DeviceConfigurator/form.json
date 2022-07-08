@@ -30,12 +30,13 @@
             {
                "caption": "id",
                "name": "id",
-               "width": "100px"
+               "width": "100px",
+               "visible": false
             },
             {
-               "caption": "DeviceID",
+               "caption": "Device ID",
                "name": "DeviceID",
-               "width": "100px"
+               "width": "310px"
             },
             {
                "caption": "Name",
