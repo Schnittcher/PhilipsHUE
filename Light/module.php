@@ -8,12 +8,11 @@ eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DI
 
 class Light extends RessourceModule
 {
-
-    const SERVICE = 'light';
-
     use \PhilipsHUE\DebugHelper;
     use \PhilipsHUE\ColorHelper;
     use \PhilipsHUE\VariableProfileHelper;
+
+    const SERVICE = 'light';
 
     public static $Variables = [
         ['on', 'State', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
@@ -36,13 +35,13 @@ class Light extends RessourceModule
     {
         switch ($Ident) {
             case 'on':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => $Value, 'dynamics' => ['duration' => $this->GetValue('transition')]]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => $Value], 'dynamics' => ['duration' => $this->GetValue('transition')]]));
                 break;
             case 'brightness':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['dimming' => ['brightness' => $Value, 'dynamics' => ['duration' => $this->GetValue('transition')]]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true],'dimming' => ['brightness' => $Value], 'dynamics' => ['duration' => $this->GetValue('transition')]]));
                 break;
             case 'color_temperature':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $this->GetValue('transition')]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true],'color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $this->GetValue('transition')]]));
                 break;
             case 'transition':
                 $this->SetValue('transition', $Value);
