@@ -2,7 +2,7 @@
    "elements": [
       {
          "type": "Label",
-         "caption": "Configurator to find all HUE Devices"
+         "caption": "Configurator to find all HUE Rooms"
       },
       {
          "type": "ValidationTextBox",
@@ -30,12 +30,13 @@
             {
                "caption": "id",
                "name": "id",
-               "width": "100px"
+               "width": "100px",
+               "visible": false
             },
             {
-               "caption": "RoomID",
+               "caption": "Room ID",
                "name": "RoomID",
-               "width": "100px"
+               "width": "310px"
             },
             {
                "caption": "Name",
