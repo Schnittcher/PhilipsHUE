@@ -32,26 +32,29 @@ class HUEGroupedLight extends RessourceModule
     public function RequestAction($Ident, $Value)
     {
         switch ($Ident) {
-            case 'on':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => $Value, 'dynamics' => ['duration' => $this->GetValue('transition')]]]));
+            case
+             'on':
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => $Value], 'dynamics' => ['duration' => $duration]]));
                 break;
             case 'brightness':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['dimming' => ['brightness' => $Value, 'dynamics' => ['duration' => $this->GetValue('transition')]]]));
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'dimming' => ['brightness' => $Value], 'dynamics' => ['duration' => $duration]]));
                 break;
             case 'color_temperature':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $this->GetValue('transition')]]));
-                $this->SetValue($Ident, $Value);
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $duration]]));
                 break;
             case 'transition':
                 $this->SetValue('transition', $Value);
                 break;
             case 'color':
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
                 $RGB = $this->HexToRGB($Value);
                 $this->SendDebug('RGB', $RGB, 0);
                 $XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
                 $this->SendDebug('Color', $XY, 0);
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]], 'dynamics' => ['duration' => $this->GetValue('transition')]]));
-                $this->SetValue($Ident, $Value);
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]], 'dynamics' => ['duration' => $duration]]));
                 break;
             }
     }
