@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class Bridge extends IPSModule
+class HUEBridge extends IPSModule
 {
     public function Create()
     {

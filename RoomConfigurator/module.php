@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class RoomConfigurator extends IPSModule
+class HUERoomConfigurator extends IPSModule
 {
     const RESOURCES =
         [

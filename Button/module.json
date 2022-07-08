@@ -1,6 +1,6 @@
 {
   "id": "{2D52B78D-0A13-485B-8B98-C2E0A6BA2EF1}",
-  "name": "Button",
+  "name": "HUE Button",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Button"],

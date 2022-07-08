@@ -1,6 +1,6 @@
 {
   "id": "{93B25D1B-5630-4A3E-8BA9-FD2B4D4177F0}",
-  "name": "Temperature",
+  "name": "HUE Temperature",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Temperature"],

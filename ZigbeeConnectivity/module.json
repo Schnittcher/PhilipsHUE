@@ -1,6 +1,6 @@
 {
   "id": "{88465699-1C57-429B-924A-CAA56F45762F}",
-  "name": "ZigbeeConnectivity",
+  "name": "HUE Zigbee Connectivity",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Zigbee Connectivity"],

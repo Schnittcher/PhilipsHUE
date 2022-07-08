@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
 
-class DevicePower extends RessourceModule
+class HUEDevicePower extends RessourceModule
 {
     const SERVICE = 'device_power';
 

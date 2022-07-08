@@ -1,6 +1,6 @@
 {
   "id": "{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}",
-  "name": "Light",
+  "name": "HUE Light",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Light"],

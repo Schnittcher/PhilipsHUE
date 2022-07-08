@@ -1,6 +1,6 @@
 {
   "id": "{F8EAC53D-5442-405B-99EC-394046D07141}",
-  "name": "LightLevel",
+  "name": "HUE Light Level",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Motion"],

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
 
-class Discovery extends IPSModule
+class HUEDiscovery extends IPSModule
 {
     use \PhilipsHUE\DebugHelper;
 

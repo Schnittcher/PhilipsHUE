@@ -1,6 +1,6 @@
 {
   "id": "{943D4F07-294C-4FFC-98E1-82E78D3B4584}",
-  "name": "RoomConfigurator",
+  "name": "HUE Room Configurator",
   "type": 4,
   "vendor": "Philips",
   "aliases": ["Philips Hue Room Configurator V2"],

@@ -1,6 +1,6 @@
 {
   "id": "{52399872-F02A-4BEB-ACA0-1F6AE04D9663}",
-  "name": "DeviceConfigurator",
+  "name": "HUE Device Configurator",
   "type": 4,
   "vendor": "Philips",
   "aliases": ["Philips Hue Device Configurator V2"],

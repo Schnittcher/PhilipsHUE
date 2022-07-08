@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
 
-class Temperature extends RessourceModule
+class HUETemperature extends RessourceModule
 {
     const SERVICE = 'temperature';
 

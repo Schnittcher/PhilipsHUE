@@ -6,7 +6,7 @@ eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DI
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/ColorHelper.php') . '}');
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
 
-class Light extends RessourceModule
+class HUELight extends RessourceModule
 {
     use \PhilipsHUE\DebugHelper;
     use \PhilipsHUE\ColorHelper;

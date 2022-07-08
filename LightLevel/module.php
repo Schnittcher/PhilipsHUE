@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
 
-class LightLevel extends RessourceModule
+class HUELightLevel extends RessourceModule
 {
     const SERVICE = 'light_level';
 

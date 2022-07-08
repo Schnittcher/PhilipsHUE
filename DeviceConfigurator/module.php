@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class DeviceConfigurator extends IPSModule
+class HUEDeviceConfigurator extends IPSModule
 {
     const RESOURCES =
         [

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
 
-class Motion extends RessourceModule
+class HUEMotion extends RessourceModule
 {
     const SERVICE = 'motion';
 

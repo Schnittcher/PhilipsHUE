@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
 
-class ZigbeeConnectivity extends RessourceModule
+class HUEZigbeeConnectivity extends RessourceModule
 {
     use \PhilipsHUE\VariableProfileHelper;
     const SERVICE = 'zigbee_connectivity';

@@ -1,6 +1,6 @@
 {
   "id": "{B86C3E14-09CC-4EF0-A28C-AA198FC25C51}",
-  "name": "DevicePower",
+  "name": "HUE Device Power",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Device Power"],

@@ -1,6 +1,6 @@
 {
   "id": "{6324AC4A-330C-4CB2-9281-12EECB450024}",
-  "name": "GroupedLight",
+  "name": "HUE Grouped Light",
   "type": 3,
   "vendor": "Philips",
   "aliases": ["Philips Hue Grouped Light"],
