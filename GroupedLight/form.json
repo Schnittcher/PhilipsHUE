@@ -2,8 +2,8 @@
   "elements": [
     {
       "type": "ValidationTextBox",
-      "name": "RoomID",
-      "caption": "HUE Room ID"
+      "name": "RoomZoneID",
+      "caption": "HUE Room / Zone ID"
     },
     {
       "type": "ValidationTextBox",
