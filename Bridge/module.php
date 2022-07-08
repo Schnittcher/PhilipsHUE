@@ -53,6 +53,9 @@ class HUEBridge extends IPSModule
             case 'getRooms':
                 $result = $this->getRooms();
                 break;
+            case 'getZones':
+                $result = $this->getZones();
+                break;
             case 'setResourceData':
                 $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
                 break;
@@ -103,6 +106,11 @@ class HUEBridge extends IPSModule
     public function getRooms()
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/room', '', 'GET');
+    }
+
+    public function getZones()
+    {
+        return $this->sendRequest($this->ReadAttributeString('User'), 'resource/zone', '', 'GET');
     }
 
     private function sendRequest(string $User, string $endpoint, string $params, string $method = 'GET')

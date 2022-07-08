@@ -1,0 +1,12 @@
+{
+  "translations": {
+    "de": {
+      "Serialnumber": "Seriennummer",
+      "Configurator to find all HUE Zones": "Konfigurator, um alle HUE-Zonen zu finden",
+      "Configurator": "Konfigurator",
+      "Target Category": "Zielkategorie",
+      "Type": "Typ",
+      "Zone ID": "Zone ID"
+    }
+  }
+}
