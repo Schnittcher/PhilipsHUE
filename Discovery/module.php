@@ -7,6 +7,13 @@ class HUEDiscovery extends IPSModule
 {
     use \PhilipsHUE\DebugHelper;
 
+    const CONFIGURATORS =
+    [
+        'Device Configurator'                 => '{52399872-F02A-4BEB-ACA0-1F6AE04D9663}',
+        'Room Configurator'                   => '{943D4F07-294C-4FFC-98E1-82E78D3B4584}',
+        'Zone Configurator'                   => '{2DCB7BB9-4634-4419-AE68-C0CC771547E5}'
+    ];
+
     public function Create()
     {
         //Never delete this line!
@@ -25,36 +32,45 @@ class HUEDiscovery extends IPSModule
         $Bridges = $this->mDNSDiscoverBridges();
 
         $Values = [];
+        $configuratorID = 9000;
 
-        foreach ($Bridges as $Bridge) {
-            $instanceID = $this->getHUEBridgeInstances($Bridge['serialNumber']);
-
-            $AddValue = [
+        foreach ($Bridges as $key => $Bridge) {
+            $Values[] = [
+                'id'                    => $key + 1,
                 'IPAddress'             => $Bridge['IPv4'],
                 'name'                  => $Bridge['deviceName'],
                 'ModelName'             => $Bridge['modelName'],
                 'ModelNumber'           => $Bridge['modelNumber'],
-                'SerialNumber'          => $Bridge['serialNumber'],
-                'instanceID'            => $instanceID
+                'SerialNumber'          => $Bridge['serialNumber']
             ];
 
-            $AddValue['create'] = [
-                [
-                    'moduleID'      => '{52399872-F02A-4BEB-ACA0-1F6AE04D9663}',
-                    'configuration' => [
-                        'Serialnumber' => $Bridge['serialNumber']
+            foreach (self::CONFIGURATORS as $configuratorKey => $Configurator) {
+                $configuratorID++;
+                $Values[] = [
+                    'parent'                => $key + 1,
+                    'id'                    => $configuratorID,
+                    'IPAddress'             => '',
+                    'name'                  => $this->Translate($configuratorKey),
+                    'ModelName'             => '',
+                    'ModelNumber'           => '',
+                    'SerialNumber'          => '',
+                    'instanceID'            => $this->getInstanceID($Bridge['serialNumber'], $this->getModuleIDByType($configuratorKey)),
+                    'create'                => [
+                        [
+                            'moduleID'      => $this->getModuleIDByType($configuratorKey),
+                            'configuration' => [
+                                'Serialnumber' => $Bridge['serialNumber']
+                            ]
+                        ],
+                        [
+                            'moduleID'      => '{6786AF05-B089-4BD0-BABA-B2B864CF92E3}',
+                            'configuration' => [
+                                'Host' => $Bridge['IPv4']
+                            ]
+                        ]
                     ]
-                ],
-                [
-                    'moduleID'      => '{6786AF05-B089-4BD0-BABA-B2B864CF92E3}',
-                    'configuration' => [
-                        'Host' => $Bridge['IPv4']
-                    ]
-                ]
-
-            ];
-
-            $Values[] = $AddValue;
+                ];
+            }
         }
         $Form['actions'][0]['values'] = $Values;
         return json_encode($Form);
@@ -104,14 +120,19 @@ class HUEDiscovery extends IPSModule
         return $Xml;
     }
 
-    private function getHUEBridgeInstances($Serialnumber)
+    private function getModuleIDByType($type)
     {
-        $InstanceIDs = IPS_GetInstanceListByModuleID('{EE92367A-BB8B-494F-A4D2-FAD77290CCF4}');
-        foreach ($InstanceIDs as $id) {
-            if (IPS_GetProperty($id, 'Serialnumber') == $Serialnumber) {
-                return $id;
+        return isset(self::CONFIGURATORS[$type]) ? self::CONFIGURATORS[$type] : self::CONFIGURATORS['Device Configurator']; //TODO Default
+    }
+
+    private function getInstanceID($Serialnumber,$GUID)
+    {
+            $IDs = IPS_GetInstanceListByModuleID($GUID);
+            foreach ($IDs as $id) {
+                if ((strtolower(IPS_GetProperty($id, 'Serialnumber')) == strtolower($Serialnumber))) {
+                    return $id;
+                }
             }
-        }
         return 0;
     }
 }
