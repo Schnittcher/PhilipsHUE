@@ -74,7 +74,6 @@ class HUEBridge extends IPSModule
     {
         $data = json_decode($JSONString, true);
         $HUEData = json_decode($data['Data'], true);
-
         foreach ($HUEData as $key => $Data) {
             $Data['DataID'] = '{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}';
             $Data['Data'] = $Data['data'];

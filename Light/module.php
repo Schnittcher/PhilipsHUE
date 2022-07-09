@@ -81,7 +81,9 @@ class HUELight extends RessourceModule
 
         if (array_key_exists('color_temperature', $Data)) {
             if (array_key_exists('mirek', $Data['color_temperature'])) {
-                $this->SetValue('color_temperature', $Data['color_temperature']['mirek']);
+                if ($Data['color_temperature']['mirek'] != null) { //Bei Lampen, welche nicht von Philips sind, kann es zu Problemen mit der Farbtemperatur kommen
+                    $this->SetValue('color_temperature', $Data['color_temperature']['mirek']);
+                }
             }
         }
 
