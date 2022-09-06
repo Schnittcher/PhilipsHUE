@@ -36,7 +36,8 @@
             {
                "caption": "Room ID",
                "name": "RoomID",
-               "width": "310px"
+               "width": "310px",
+               "visible": false
             },
             {
                "caption": "Name",

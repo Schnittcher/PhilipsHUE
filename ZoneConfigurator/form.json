@@ -36,7 +36,8 @@
             {
                "caption": "Zone ID",
                "name": "ZoneID",
-               "width": "310px"
+               "width": "310px",
+               "visible": false
             },
             {
                "caption": "Name",
