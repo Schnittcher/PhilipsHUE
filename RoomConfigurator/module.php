@@ -62,7 +62,7 @@ class HUERoomConfigurator extends IPSModule
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
                             'RoomZoneID'        => strval($Room['id']),
-                            'ResourceID'    => strval($Service['rid']),
+                            'ResourceID'        => strval($Service['rid']),
                         ],
                         'name'     => $Room['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
                         'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
