@@ -125,14 +125,14 @@ class HUEDiscovery extends IPSModule
         return isset(self::CONFIGURATORS[$type]) ? self::CONFIGURATORS[$type] : self::CONFIGURATORS['Device Configurator']; //TODO Default
     }
 
-    private function getInstanceID($Serialnumber,$GUID)
+    private function getInstanceID($Serialnumber, $GUID)
     {
-            $IDs = IPS_GetInstanceListByModuleID($GUID);
-            foreach ($IDs as $id) {
-                if ((strtolower(IPS_GetProperty($id, 'Serialnumber')) == strtolower($Serialnumber))) {
-                    return $id;
-                }
+        $IDs = IPS_GetInstanceListByModuleID($GUID);
+        foreach ($IDs as $id) {
+            if ((strtolower(IPS_GetProperty($id, 'Serialnumber')) == strtolower($Serialnumber))) {
+                return $id;
             }
+        }
         return 0;
     }
 }
