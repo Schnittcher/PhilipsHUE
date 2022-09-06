@@ -56,6 +56,9 @@ class HUEBridge extends IPSModule
             case 'getZones':
                 $result = $this->getZones();
                 break;
+            case 'getScenes':
+                $result = $this->getScenes();
+                break;
             case 'setResourceData':
                 $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
                 break;
@@ -110,6 +113,11 @@ class HUEBridge extends IPSModule
     public function getZones()
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/zone', '', 'GET');
+    }
+
+    public function getScenes()
+    {
+        return $this->sendRequest($this->ReadAttributeString('User'), 'resource/scene', '', 'GET');
     }
 
     private function sendRequest(string $User, string $endpoint, string $params, string $method = 'GET')

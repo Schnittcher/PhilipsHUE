@@ -1,0 +1,13 @@
+{
+  "translations": {
+    "de": {
+      "Serialnumber": "Seriennummer",
+      "Configurator to find all HUE Scenes": "Konfigurator, um alle HUE-Szenen zu finden",
+      "Configurator": "Konfigurator",
+      "Target Category": "Zielkategorie",
+      "Type": "Typ",
+      "Scene ID": "Szenen ID",
+      "Room": "Raum"
+    }
+  }
+}
