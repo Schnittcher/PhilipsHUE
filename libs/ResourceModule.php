@@ -102,9 +102,8 @@ class RessourceModule extends IPSModule
     {
         if (@$this->GetIDForIdent($Ident)) {
             return parent::GetValue($Ident);
-         }
-         return false;
-
+        }
+        return false;
     }
 
     protected function sendData(string $rid, string $endpoint, string $value)

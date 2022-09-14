@@ -62,7 +62,7 @@ class HUEZoneConfigurator extends IPSModule
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
                             'RoomZoneID'        => strval($Zone['id']),
-                            'ResourceID'    => strval($Service['rid']),
+                            'ResourceID'        => strval($Service['rid']),
                         ],
                         'name'     => $Zone['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
                         'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
