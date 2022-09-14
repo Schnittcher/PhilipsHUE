@@ -11,6 +11,7 @@
    ------------ | ----------------
    HUE Room ID | Hier wird die ID der HUE Räume eingetragen. (Automatisch über den Konfigurator)
    HUE Resource ID | Hier wird die ID der HUE Ressource eingetragen. (Automatisch über den Konfigurator)
+   Status für Farbe und Farbtemperatur simulieren | Wenn die Farbe oder die Farbtemperatur über die Instanz gesetzt wird, kann mit dieser Option ein Simulieren der Rückantwort aktiviert werden. Da die HUE Gruppe keine Rückantwort für die Farbe oder die Farbtemperatur erhalten.
    Variablen | Hier können einzelne Variablen deaktiviert werden.
 
   ## 2. Funktionen

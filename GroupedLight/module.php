@@ -25,6 +25,7 @@ class HUEGroupedLight extends RessourceModule
     {
         parent::Create();
 
+        $this->RegisterPropertyBoolean('stausColorColorTemperature', false);
         $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 556, 1);
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
     }
@@ -44,6 +45,9 @@ class HUEGroupedLight extends RessourceModule
             case 'color_temperature':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => true], 'color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $duration]]));
+                if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
+                    $this->SetValue('color_temperature', $Value);
+                }
                 break;
             case 'transition':
                 $this->SetValue('transition', $Value);
@@ -55,6 +59,9 @@ class HUEGroupedLight extends RessourceModule
                 $XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
                 $this->SendDebug('Color', $XY, 0);
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]], 'dynamics' => ['duration' => $duration]]));
+                if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
+                    $this->SetValue('color', $Value);
+                }
                 break;
             }
     }

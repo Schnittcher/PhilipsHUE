@@ -10,6 +10,7 @@
       "name": "ResourceID",
       "caption": "HUE Resource ID"
     },
+    { "type": "CheckBox", "name": "stausColorColorTemperature", "caption": "Simulate status for color and color temperature" },
     {
       "type": "List",
       "name": "Variables",

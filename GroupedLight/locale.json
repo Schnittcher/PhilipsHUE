@@ -6,7 +6,8 @@
       "Color": "Farbe",
       "Color Temperature": "Farbtemperatur",
       "Transition": "Übergang",
-      "Variables": "Variablen"
+      "Variables": "Variablen",
+      "Simulate status for color and color temperature": "Status für Farbe und Farbtemperatur simulieren"
     }
   }
 }
