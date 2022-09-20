@@ -13,7 +13,7 @@
         {
             "type": "Button",
             "caption": "Update scene profile",
-            "onClick": "PHUE_updateSceneProfile($id);"
+            "onClick": "PHUE_updateSceneProfileNeu($id);"
         },
         {
             "type": "CheckBox",

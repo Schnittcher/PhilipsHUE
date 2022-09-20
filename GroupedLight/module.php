@@ -34,7 +34,7 @@ class HUEGroupedLight extends RessourceModule
     public function ApplyChanges()
     {
         parent::ApplyChanges();
-        $this->updateSceneProfile();
+        $this->updateSceneProfileNeu();
     }
 
     public function RequestAction($Ident, $Value)
@@ -78,7 +78,7 @@ class HUEGroupedLight extends RessourceModule
             }
     }
 
-    public function updateSceneProfile()
+    public function updateSceneProfileNeu()
     {
         $ProfileName = 'PHUE.Scene.' . $this->ReadPropertyString('ResourceID');
         if (IPS_VariableProfileExists($ProfileName)) {
