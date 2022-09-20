@@ -91,15 +91,15 @@ class HUEBridge extends IPSModule
     {
         $params['devicetype'] = 'Symcon';
         $result = $this->sendRequest('', '', json_encode($params), 'POST');
-        if (@isset($result[0]->success->username)) {
-            $this->SendDebug('Register User', 'OK: ' . $result[0]->success->username, 0);
-            $this->WriteAttributeString('User', $result[0]->success->username);
+        if (@isset($result[0]['success']['username'])) {
+            $this->SendDebug('Register User', 'OK: ' . $result[0]['success']['username'], 0);
+            $this->WriteAttributeString('User', $result[0]['success']['username']);
             $this->RegisterServerEvents();
             $this->SetStatus(102);
         } else {
             $this->SendDebug(__FUNCTION__ . 'Pairing failed', json_encode($result), 0);
             $this->SetStatus(200);
-            $this->LogMessage('Error: ' . $result[0]->error->type . ': ' . $result[0]->error->description, KL_ERROR);
+            $this->LogMessage('Error: ' . $result[0]['error']['type'] . ': ' . $result[0]['error']['description'], KL_ERROR);
         }
     }
 
