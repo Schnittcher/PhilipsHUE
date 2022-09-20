@@ -19,6 +19,7 @@ class HUEGroupedLight extends RessourceModule
         ['color', 'Color', VARIABLETYPE_INTEGER, '~HexColor', true, true],
         ['color_temperature', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperature', true, true],
         ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true],
+        ['scene', 'Scene', VARIABLETYPE_STRING, '', true, true],
     ];
 
     public function Create()
@@ -30,11 +31,16 @@ class HUEGroupedLight extends RessourceModule
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
     }
 
+    public function ApplyChanges()
+    {
+        parent::ApplyChanges();
+        $this->updateSceneProfile();
+    }
+
     public function RequestAction($Ident, $Value)
     {
         switch ($Ident) {
-            case
-             'on':
+            case 'on':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => $Value], 'dynamics' => ['duration' => $duration]]));
                 break;
@@ -63,7 +69,32 @@ class HUEGroupedLight extends RessourceModule
                     $this->SetValue('color', $Value);
                 }
                 break;
+            case 'transition':
+                $this->SetValue('transition', $Value);
+                break;
+            case 'scene':
+                $this->sendData($Value, 'scene', json_encode(['recall' => ['action' => 'active']]));
+                break;
             }
+    }
+
+    public function updateSceneProfile()
+    {
+        $ProfileName = 'PHUE.Scene.' . $this->ReadPropertyString('ResourceID');
+        if (IPS_VariableProfileExists($ProfileName)) {
+            IPS_DeleteVariableProfile($ProfileName);
+        }
+        $scenes = $this->getScenesbyGroup();
+        $Associations = [];
+        foreach ($scenes as $key => $scene) {
+            $Associations[] = [$scene[0]['id'], $scene[0]['metadata']['name'], '', 0x000000];
+        }
+        $this->RegisterProfileStringEx($ProfileName, 'Light', '', '', $Associations);
+
+        $variableID = $this->GetIDForIdent('scene');
+        if (IPS_VariableExists($variableID)) {
+            IPS_SetVariableCustomProfile($variableID, $ProfileName);
+        }
     }
 
     protected function mapResultsToValues(array $Data)
@@ -101,5 +132,22 @@ class HUEGroupedLight extends RessourceModule
                 $this->SetValue('color', $DecColor);
             }
         }
+    }
+
+    private function getScenesbyGroup()
+    {
+        $Data = [];
+        $Buffer = [];
+
+        $Data['DataID'] = '{03995C27-F41C-4E0C-85C9-099084294C3B}';
+        $Buffer['Command'] = 'getScenesbyGroup';
+        $Buffer['Params'] = '';
+        $Data['Buffer'] = $Buffer;
+        $Data = json_encode($Data);
+        $result = json_decode($this->SendDataToParent($Data), true);
+        if (!$result) {
+            return [];
+        }
+        return $result;
     }
 }

@@ -5,8 +5,10 @@
       "Brightness": "Helligkeit",
       "Color": "Farbe",
       "Color Temperature": "Farbtemperatur",
+      "Scene": "Szene",
       "Transition": "Übergang",
       "Variables": "Variablen",
+      "Update scene profile": "Aktualisiere Szenenprofil",
       "Simulate status for color and color temperature": "Status für Farbe und Farbtemperatur simulieren"
     }
   }
