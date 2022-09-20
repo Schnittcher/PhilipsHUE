@@ -59,6 +59,9 @@ class HUEBridge extends IPSModule
             case 'getScenes':
                 $result = $this->getScenes();
                 break;
+            case 'getScenesbyGroup':
+                $result = $this->getScenesbyGroup();
+                break;
             case 'setResourceData':
                 $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], $data['Buffer']['value'], 'PUT');
                 break;
@@ -120,6 +123,20 @@ class HUEBridge extends IPSModule
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/scene', '', 'GET');
     }
 
+    public function getScenesbyGroup()
+    {
+        $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/scene', '', 'GET');
+        $data = $result['data'];
+        $Scenes = [];
+        foreach ($data as $key => $scene) {
+            if (!array_key_exists($scene['group']['rid'], $Scenes)) {
+                $Scenes[$scene['group']['rid']] = [];
+            }
+            array_push($Scenes[$scene['group']['rid']], $scene);
+        }
+        return $Scenes;
+    }
+
     private function sendRequest(string $User, string $endpoint, string $params, string $method = 'GET')
     {
         if ($this->ReadPropertyString('Host') == '') {
@@ -164,7 +181,7 @@ class HUEBridge extends IPSModule
         if ($headerInfo['http_code'] == 200) {
             if ($apiResult != false) {
                 $this->SetStatus(102);
-                return json_decode($apiResult, false);
+                return json_decode($apiResult, true);
             } else {
                 $this->LogMessage('Philips HUE sendRequest Error' . curl_error($ch), 10205);
                 //$this->SetStatus(201);
