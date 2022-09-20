@@ -86,14 +86,19 @@ class HUEGroupedLight extends RessourceModule
         }
         $scenes = $this->getScenesbyGroup();
         $Associations = [];
-        foreach ($scenes as $key => $scene) {
-            $Associations[] = [$scene[0]['id'], $scene[0]['metadata']['name'], '', 0x000000];
-        }
-        $this->RegisterProfileStringEx($ProfileName, 'Light', '', '', $Associations);
 
-        $variableID = $this->GetIDForIdent('scene');
-        if (IPS_VariableExists($variableID)) {
-            IPS_SetVariableCustomProfile($variableID, $ProfileName);
+        $RoomZoneID = $this->ReadPropertyString('RoomZoneID');
+
+        if (array_key_exists($RoomZoneID, $scenes)) {
+            foreach ($scenes[$RoomZoneID] as $key => $scene) {
+                $Associations[] = [$scene['id'], $scene['metadata']['name'], '', 0x000000];
+            }
+            $this->RegisterProfileStringEx($ProfileName, 'Light', '', '', $Associations);
+
+            $variableID = $this->GetIDForIdent('scene');
+            if (IPS_VariableExists($variableID)) {
+                IPS_SetVariableCustomProfile($variableID, $ProfileName);
+            }
         }
     }
 
