@@ -34,7 +34,6 @@ class HUEGroupedLight extends RessourceModule
     public function ApplyChanges()
     {
         parent::ApplyChanges();
-        $this->updateSceneProfileNeu();
     }
 
     public function RequestAction($Ident, $Value)
