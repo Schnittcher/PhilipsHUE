@@ -41,7 +41,11 @@ class HUELight extends RessourceModule
                 break;
             case 'brightness':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'dimming' => ['brightness' => $Value], 'dynamics' => ['duration' => $duration]]));
+                if ($Value > 0) {
+                    $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'dimming' => ['brightness' => $Value], 'dynamics' => ['duration' => $duration]]));
+                } else {
+                    $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => false]]));
+                }
                 break;
             case 'color_temperature':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
