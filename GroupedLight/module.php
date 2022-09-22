@@ -48,7 +48,7 @@ class HUEGroupedLight extends RessourceModule
                 if ($Value > 0) {
                     $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => true], 'dimming' => ['brightness' => $Value], 'dynamics' => ['duration' => $duration]]));
                 } else {
-                    $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => false]]));
+                    $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => false], 'dynamics' => ['duration' => $duration]]));
                 }
                 break;
             case 'color_temperature':
