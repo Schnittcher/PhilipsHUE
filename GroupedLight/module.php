@@ -27,7 +27,7 @@ class HUEGroupedLight extends RessourceModule
         parent::Create();
 
         $this->RegisterPropertyBoolean('stausColorColorTemperature', false);
-        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 556, 1);
+        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
     }
 
