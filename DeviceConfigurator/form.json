@@ -30,7 +30,7 @@
             {
                "caption": "id",
                "name": "id",
-               "width": "100px",
+               "width": "auto",
                "visible": false
             },
             {
@@ -41,7 +41,7 @@
             {
                "caption": "Name",
                "name": "DisplayName",
-               "width": "auto"
+               "width": "250px"
             },
             {
                "caption": "Type",
