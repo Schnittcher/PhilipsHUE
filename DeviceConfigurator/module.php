@@ -58,6 +58,9 @@ class HUEDeviceConfigurator extends IPSModule
                 'Productname'           => $Device['product_data']['product_name'],
             ];
             foreach ($Device['services'] as $serviceKey => $Service) {
+                if ($Service['rtype'] == 'entertainment') {
+                    continue;
+                }
                 $servicesID++;
                 $Values[] = [
                     'parent'                => $key + 1,
