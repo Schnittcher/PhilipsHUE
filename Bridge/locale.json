@@ -6,7 +6,9 @@
       "HUE Bridge unreachable": "HUE Bridge nicht erreichbar",
       "Registration complete": "Registrierung abgeschlossen",
       "Registration incomplete, more Information in IP-Symcon Log": "Registrierung unvollständig, weitere Informationen im IP-Symcon Log",
-      "IO instance is not active": "IO Instanz ist nicht aktiv"
+      "IO instance is not active": "IO Instanz ist nicht aktiv",
+      "Error messages": "Fehlermeldungen",
+      "Error 207": "Fehler 207"
     }
   }
 }

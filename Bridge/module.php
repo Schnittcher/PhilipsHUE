@@ -10,6 +10,7 @@ class HUEBridge extends IPSModule
         parent::Create();
         $this->RegisterPropertyString('Host', '');
         $this->RegisterAttributeString('User', '');
+        $this->RegisterPropertyBoolean('Error207', false);
         $this->RequireParent('{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}');
 
         $this->RegisterMessage(IPS_GetInstance($this->InstanceID)['ConnectionID'], IM_CHANGESTATUS);
@@ -191,7 +192,9 @@ class HUEBridge extends IPSModule
             $result = json_decode($apiResult, true);
             switch ($headerInfo['http_code']) {
                 case 207:
-                    $this->LogMessage($result['data'][0]['rtype'] . ' - ' . $result['data'][0]['rid'] . ': ' . $result['errors'][0]['description'], KL_WARNING);
+                    if ($this->ReadAttributeBoolean('Error207')) {
+                        $this->LogMessage($result['data'][0]['rtype'] . ' - ' . $result['data'][0]['rid'] . ': ' . $result['errors'][0]['description'], KL_WARNING);
+                    }
                     return;
                 default:
                     $this->LogMessage('Philips HUE sendRequest Error - Curl Error:' . curl_error($ch) . 'HTTP Code: ' . $headerInfo['http_code'], 10205);
