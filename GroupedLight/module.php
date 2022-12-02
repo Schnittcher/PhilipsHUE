@@ -81,6 +81,20 @@ class HUEGroupedLight extends RessourceModule
             }
     }
 
+    public function setColor($color, $OptParams)
+    {
+        $RGB = $this->HexToRGB($color);
+        $this->SendDebug('RGB', $RGB, 0);
+        $XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
+
+        $params = ['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]]];
+        $params = array_merge($params, $OptParams);
+        $params = json_encode($params);
+        $this->SendDebug('setColor :: Params', $params, 0);
+        $this->sendData($this->ReadPropertyString('ResourceID'), 'light', $params);
+        return;
+    }
+
     public function updateSceneProfileNeu()
     {
         $ProfileName = 'PHUE.Scene.' . $this->ReadPropertyString('ResourceID');
