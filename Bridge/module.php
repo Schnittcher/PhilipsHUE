@@ -192,7 +192,7 @@ class HUEBridge extends IPSModule
             $result = json_decode($apiResult, true);
             switch ($headerInfo['http_code']) {
                 case 207:
-                    if ($this->ReadAttributeBoolean('Error207')) {
+                    if ($this->ReadPropertyBoolean('Error207')) {
                         $this->LogMessage($result['data'][0]['rtype'] . ' - ' . $result['data'][0]['rid'] . ': ' . $result['errors'][0]['description'], KL_WARNING);
                     }
                     return;
