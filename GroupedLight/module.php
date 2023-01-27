@@ -91,7 +91,7 @@ class HUEGroupedLight extends RessourceModule
         $params = array_merge($params, $OptParams);
         $params = json_encode($params);
         $this->SendDebug('setColor :: Params', $params, 0);
-        $this->sendData($this->ReadPropertyString('ResourceID'), 'light', $params);
+        $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', $params);
         return;
     }
 
