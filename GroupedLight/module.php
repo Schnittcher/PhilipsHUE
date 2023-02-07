@@ -81,6 +81,12 @@ class HUEGroupedLight extends RessourceModule
             }
     }
 
+    public function setAlert()
+    {
+        $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+        $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['alert' => ['action' => 'breathe'], 'dynamics' => ['duration' => $duration]]));
+    }
+
     public function setColor($color, $OptParams)
     {
         $RGB = $this->HexToRGB($color);
