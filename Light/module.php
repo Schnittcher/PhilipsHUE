@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
+
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/ColorHelper.php') . '}');
 eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
@@ -37,7 +38,7 @@ class HUELight extends RessourceModule
             case
              'on':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => $Value]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => $Value], 'dynamics' => ['duration' => $duration]]));
                 break;
             case 'brightness':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;

@@ -41,7 +41,7 @@ class HUEGroupedLight extends RessourceModule
         switch ($Ident) {
             case 'on':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => $Value]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => $Value], 'dynamics' => ['duration' => $duration]]));
                 break;
             case 'brightness':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
