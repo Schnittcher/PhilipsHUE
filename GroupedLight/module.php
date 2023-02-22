@@ -125,6 +125,14 @@ class HUEGroupedLight extends RessourceModule
         }
     }
 
+    public function getOwnerInfo()
+    {
+        $groupedLight = json_decode($this->getData($this->ReadPropertyString('ResourceID'), 'grouped_light'), true);
+        $groupedLightOwnerType = $groupedLight['data'][0]['owner']['rtype'];
+        $result = json_decode($this->getData($this->ReadPropertyString('RoomZoneID'), $groupedLightOwnerType), true);
+        return $result['data'][0];
+    }
+
     protected function mapResultsToValues(array $Data)
     {
         if (array_key_exists('on', $Data)) {
