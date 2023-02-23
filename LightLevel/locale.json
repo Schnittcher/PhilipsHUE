@@ -3,7 +3,8 @@
     "de": {
       "Enabled": "Aktiv",
       "Light Level": "Lichtpegel",
-      "Variables": "Variablen"
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
     }
   }
 }

@@ -82,6 +82,11 @@
     ],
     "actions": [
         {
+            "type": "Button",
+            "label": "Get Device Infos",
+            "onClick": "PHUE_getInfos($id);"
+        },
+        {
             "type": "TestCenter"
         },
         {

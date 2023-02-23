@@ -6,7 +6,8 @@
       "Disconnected": "Gretennt",
       "Connectivity Issue": "Konnektivitätsproblem",
       "Inidirectional Incoming": "Inidirektional Eingehend",
-      "Variables": "Variablen"
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
     }
   }
 }

@@ -6,7 +6,8 @@
       "Color": "Farbe",
       "Color Temperature": "Farbtemperatur",
       "Transition": "Übergang",
-      "Variables": "Variablen"
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
     }
   }
 }

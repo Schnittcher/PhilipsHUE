@@ -27,7 +27,6 @@ class HUELight extends RessourceModule
     public function Create()
     {
         parent::Create();
-
         $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
     }
@@ -68,8 +67,16 @@ class HUELight extends RessourceModule
 
     public function setAlert()
     {
-        $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
-        $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['alert' => ['action' => 'breathe'], 'dynamics' => ['duration' => $duration]]));
+        $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['alert' => ['action' => 'breathe']]));
+    }
+
+    public function setEffect(string $effect, int $duration)
+    {
+        if ($duration == 0) {
+            $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['effect' => ['effect' => $effect]]));
+        } else {
+            $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['timed_effects' => ['effect' => $effect], ['duration' => $duration]]));
+        }
     }
 
     public function setColor($color, $OptParams)

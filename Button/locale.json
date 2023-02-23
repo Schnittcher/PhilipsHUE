@@ -7,7 +7,8 @@
       "Short Release": "Kurzer Tastendruck",
       "Long Release": "Langer Tastendruck",
       "Double Short Release": "Doppelter kurzer Tastendruck",
-      "Variables": "Variablen"
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
     }
   }
 }

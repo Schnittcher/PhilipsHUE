@@ -138,9 +138,14 @@ class RessourceModule extends IPSModule
             return '{"data":[{}]}';
         }
 
-        $this->SendDebug(__FUNCTION__ . ' :: $Data', $Data, 0);
+        $this->SendDebug(__FUNCTION__ . ' :: Data', $Data, 0);
         $result = $this->SendDataToParent($Data);
-        $this->SendDebug(__FUNCTION__ . ' :: $result', $result, 0);
+        $this->SendDebug(__FUNCTION__ . ' :: result', $result, 0);
         return $result;
+    }
+
+    public function getInfos()
+    {
+        $result = $this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE);
     }
 }

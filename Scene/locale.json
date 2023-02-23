@@ -4,7 +4,8 @@
       "Scene ID": "Szenen ID",
       "Scene": "Szene",
       "Activate": "Aktivieren",
-      "Variables": "Variablen"
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
     }
   }
 }
