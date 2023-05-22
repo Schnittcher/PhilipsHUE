@@ -80,15 +80,29 @@ class RessourceModule extends IPSModule
         if ($this->ReadPropertyString('ResourceID') != '') {
             $result = json_decode($this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE), true);
             $Data = $result['data'][0];
-            $this->mapResultsToValues($Data);
+
+            foreach ($result['data'] as $key => $data) {
+                if ($this->ReadPropertyString('ResourceID') == $data['id']) {
+                    $this->mapResultsToValues($Data[$key]);
+                }
+            }
         }
     }
 
     public function ReceiveData($JSONString)
     {
         $this->SendDebug('JSON', $JSONString, 0);
-        $Data = json_decode($JSONString, true)['Data'][0];
-        $this->mapResultsToValues($Data);
+        $result = json_decode($JSONString, true);
+        foreach ($result['Data'] as $key => $data) {
+            if ($this->ReadPropertyString('ResourceID') == $data['id']) {
+                $this->mapResultsToValues($Data[$key]);
+            }
+        }
+    }
+
+    public function getInfos()
+    {
+        $result = $this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE);
     }
 
     protected function SetValue($Ident, $Value)
@@ -142,10 +156,5 @@ class RessourceModule extends IPSModule
         $result = $this->SendDataToParent($Data);
         $this->SendDebug(__FUNCTION__ . ' :: result', $result, 0);
         return $result;
-    }
-
-    public function getInfos()
-    {
-        $result = $this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE);
     }
 }
