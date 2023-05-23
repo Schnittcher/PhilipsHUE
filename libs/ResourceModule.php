@@ -79,7 +79,7 @@ class RessourceModule extends IPSModule
     {
         if ($this->ReadPropertyString('ResourceID') != '') {
             $result = json_decode($this->getData($this->ReadPropertyString('ResourceID'), static::SERVICE), true);
-            $Data = $result['data'][0];
+            $Data = $result['data'];
 
             foreach ($result['data'] as $key => $data) {
                 if ($this->ReadPropertyString('ResourceID') == $data['id']) {
