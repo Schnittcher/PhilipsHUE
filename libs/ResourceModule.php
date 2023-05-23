@@ -82,7 +82,7 @@ class RessourceModule extends IPSModule
             $Data = $result['Data'];
 
             foreach ($result['Data'] as $key => $data) {
-                if ($this->ReadPropertyString('ResourceID') == $data['id']) {
+                if ($this->ReadPropertyString('ResourceID') == $data[$key]['id']) {
                     $this->mapResultsToValues($Data[$key]);
                 }
             }
@@ -94,7 +94,7 @@ class RessourceModule extends IPSModule
         $this->SendDebug('JSON', $JSONString, 0);
         $result = json_decode($JSONString, true);
         foreach ($result['Data'] as $key => $data) {
-            if ($this->ReadPropertyString('ResourceID') == $data['id']) {
+            if ($this->ReadPropertyString('ResourceID') == $data[$key]['id']) {
                 $this->mapResultsToValues($Data[$key]);
             }
         }
