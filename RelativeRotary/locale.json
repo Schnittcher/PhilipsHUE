@@ -1,0 +1,16 @@
+{
+  "translations": {
+    "de": {
+      "Action": "Aktion",
+      "Direction": "Richtung",
+      "Steps": "Schritte",
+      "Duration": "Dauer",
+      "Start": "Start",
+      "Repeat": "Wiederholen",
+      "Clock wise": "im Uhrzeigersin",
+      "Counter clock wise": "Zähler im Uhrzeigersinn",
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
+    }
+  }
+}

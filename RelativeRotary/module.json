@@ -1,0 +1,11 @@
+{
+  "id": "{585B4217-36CF-4263-A898-3C2198E7C857}",
+  "name": "HUE Relative Rotary",
+  "type": 3,
+  "vendor": "Philips",
+  "aliases": ["Philips Hue Relative_Rotary"],
+  "parentRequirements": ["{03995C27-F41C-4E0C-85C9-099084294C3B}"],
+  "childRequirements": [],
+  "implemented": ["{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}"],
+  "prefix": "PHUE"
+}

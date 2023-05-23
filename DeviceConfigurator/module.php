@@ -12,7 +12,8 @@ class HUEDeviceConfigurator extends IPSModule
             'temperature'            => '{93B25D1B-5630-4A3E-8BA9-FD2B4D4177F0}',
             'device_power'           => '{B86C3E14-09CC-4EF0-A28C-AA198FC25C51}',
             'button'                 => '{2D52B78D-0A13-485B-8B98-C2E0A6BA2EF1}',
-            'light'                  => '{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}'
+            'light'                  => '{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}',
+            'relative_rotary'        => '{585B4217-36CF-4263-A898-3C2198E7C857}'
         ];
 
     public function Create()
