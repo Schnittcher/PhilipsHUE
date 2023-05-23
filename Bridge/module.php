@@ -79,11 +79,11 @@ class HUEBridge extends IPSModule
 
     public function ReceiveData($JSONString)
     {
-        $data = json_decode($JSONString, true);
-        $HUEData = json_decode($data['Data'], true);
-        foreach ($HUEData as $key => $Data) {
+        $HUEDatas = json_decode($JSONString, true);
+        $HUEDatas = json_decode($HUEDatas['Data'], true);
+        foreach ($HUEDatas as $key => $HUEData) {
             $Data['DataID'] = '{6C33FAE0-8FF8-4CAE-B5E9-89A2D24D067D}';
-            $Data['Data'] = $Data['data'];
+            $Data['Data'] = $HUEData['data'];
             $this->SendDataToChildren(json_encode($Data));
         }
     }
