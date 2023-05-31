@@ -34,12 +34,28 @@ class HUEBridge extends IPSModule
         $url = 'https://' . $this->ReadPropertyString('Host') . '/eventstream/clip/v2';
         $this->SendDebug('RegisterServerEvents :: url', $url, 0);
         $parent = IPS_GetInstance($this->InstanceID)['ConnectionID'];
-        IPS_SetProperty($parent, 'URL', $url);
-        IPS_SetProperty($parent, 'VerifyPeer', false);
-        IPS_SetProperty($parent, 'VerifyHost', false);
-        IPS_SetProperty($parent, 'Active', true);
-        IPS_SetProperty($parent, 'Headers', json_encode([['Name' => 'Accept', 'Value' => 'text/event-stream'], ['Name' => 'hue-application-key', 'Value' => $this->ReadAttributeString('User')]]));
-        IPS_ApplyChanges($parent);
+        //IPS_SetProperty($parent, 'URL', $url);
+        //IPS_SetProperty($parent, 'VerifyPeer', false);
+        //IPS_SetProperty($parent, 'VerifyHost', false);
+        //IPS_SetProperty($parent, 'Active', true);
+        //IPS_SetProperty($parent, 'Headers', json_encode([['Name' => 'Accept', 'Value' => 'text/event-stream'], ['Name' => 'hue-application-key', 'Value' => $this->ReadAttributeString('User')]]));
+        //IPS_ApplyChanges($parent);
+        $this->GetConfigurationForParent();
+    }
+
+    public function GetConfigurationForParent()
+    {
+        $url = 'https://' . $this->ReadPropertyString('Host') . '/eventstream/clip/v2';
+        $this->SendDebug('GetConfigurationForParent :: url', $url, 0);
+        $settings = [
+            'URL' => $url,
+            'VerifyPeer' => false,
+            'VerifyHost' => false,
+            //'Active' => true,
+            'Headers' => json_encode([['Name' => 'Accept', 'Value' => 'text/event-stream'], ['Name' => 'hue-application-key', 'Value' => $this->ReadAttributeString('User')]])
+        ];
+        
+        return json_encode($settings);
     }
 
     public function ForwardData($JSONString)
@@ -95,7 +111,8 @@ class HUEBridge extends IPSModule
         if (@isset($result[0]['success']['username'])) {
             $this->SendDebug('Register User', 'OK: ' . $result[0]['success']['username'], 0);
             $this->WriteAttributeString('User', $result[0]['success']['username']);
-            $this->RegisterServerEvents();
+            //$this->RegisterServerEvents();
+            $this->GetConfigurationForParent();
             $this->SetStatus(102);
         } else {
             $this->SendDebug(__FUNCTION__ . 'Pairing failed', json_encode($result), 0);
