@@ -118,7 +118,9 @@ class HUEGroupedLight extends RessourceModule
 
             $variableID = $this->GetIDForIdent('scene');
             if (IPS_VariableExists($variableID)) {
-                IPS_SetVariableCustomProfile($variableID, $ProfileName);
+                $position = IPS_GetObject($variableID)['ObjectPosition'];
+                $this->RegisterVariableString('scene', $this->Translate('Scene'), $ProfileName, $position);
+                //IPS_SetVariableCustomProfile($variableID, $ProfileName);
             }
         }
     }
