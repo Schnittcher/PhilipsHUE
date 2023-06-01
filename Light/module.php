@@ -20,8 +20,7 @@ class HUELight extends RessourceModule
         ['brightness', 'Brightness', VARIABLETYPE_INTEGER, '~Intensity.100', true, true],
         ['color', 'Color', VARIABLETYPE_INTEGER, '~HexColor', true, true],
         ['color_temperature', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperature', true, true],
-        ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true],
-
+        ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true]
     ];
 
     public function Create()

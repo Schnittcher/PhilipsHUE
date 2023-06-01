@@ -11,6 +11,7 @@
             "caption": "Variables",
             "add": false,
             "delete": false,
+            "loadValuesFromConfiguration": false,
             "columns": [
                 {
                     "caption": "Ident",

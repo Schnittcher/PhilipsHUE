@@ -7,7 +7,6 @@ class RessourceModule extends IPSModule
     public function Create()
     {
         parent::Create();
-        //$this->ConnectParent('{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}');
         $this->ConnectParent('{6786AF05-B089-4BD0-BABA-B2B864CF92E3}');
 
         $this->RegisterPropertyString('DeviceID', '');
@@ -27,21 +26,18 @@ class RessourceModule extends IPSModule
             ];
         }
         $this->RegisterPropertyString('Variables', json_encode($Variables));
+        $this->GetConfigurationForm();
     }
 
-    public function ApplyChanges()
+    public function GetConfigurationForm()
     {
-        parent::ApplyChanges();
-        $this->ConnectParent('{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}');
-
-        //Setze Filter für ReceiveData
-        $ResourceID = $this->ReadPropertyString('ResourceID');
-        $this->SetReceiveDataFilter('.*' . $ResourceID . '.*');
+        $childClassInfo = new ReflectionClass($this);
+        $Form = json_decode(file_get_contents(dirname($childClassInfo->getFileName()) . '/form.json'), true);
 
         $NewRows = static::$Variables;
         $NewPos = 0;
         $Variables = json_decode($this->ReadPropertyString('Variables'), true);
-        foreach ($Variables as $Variable) {
+        foreach ($Variables as $key => $Variable) {
             @$this->MaintainVariable($Variable['Ident'], $Variable['Name'], $Variable['VarType'], $Variable['Profile'], $Variable['Pos'], $Variable['Keep']);
             if ($Variable['Action'] && $Variable['Keep']) {
                 $this->EnableAction($Variable['Ident']);
@@ -68,10 +64,21 @@ class RessourceModule extends IPSModule
                     'Keep'         => $NewVariable[5]
                 ];
             }
-            IPS_SetProperty($this->InstanceID, 'Variables', json_encode($Variables));
-            IPS_ApplyChanges($this->InstanceID);
-            return;
         }
+        $Variables = array_values($Variables);
+        $Form['elements'][2]['values'] = $Variables;
+        return json_encode($Form);
+    }
+
+    public function ApplyChanges()
+    {
+        parent::ApplyChanges();
+        $this->ConnectParent('{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}');
+
+        //Setze Filter für ReceiveData
+        $ResourceID = $this->ReadPropertyString('ResourceID');
+        $this->SetReceiveDataFilter('.*' . $ResourceID . '.*');
+
         $this->updateValues();
     }
 
