@@ -26,7 +26,6 @@ class RessourceModule extends IPSModule
             ];
         }
         $this->RegisterPropertyString('Variables', json_encode($Variables));
-        $this->GetConfigurationForm();
     }
 
     public function GetConfigurationForm()
@@ -78,7 +77,7 @@ class RessourceModule extends IPSModule
         //Setze Filter für ReceiveData
         $ResourceID = $this->ReadPropertyString('ResourceID');
         $this->SetReceiveDataFilter('.*' . $ResourceID . '.*');
-
+        $this->GetConfigurationForm();
         $this->updateValues();
     }
 
