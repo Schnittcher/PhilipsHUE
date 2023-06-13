@@ -11,16 +11,6 @@
             "caption": "HUE Resource ID"
         },
         {
-            "type": "Button",
-            "caption": "Update scene profile",
-            "onClick": "PHUE_updateSceneProfileNeu($id);"
-        },
-        {
-            "type": "CheckBox",
-            "name": "stausColorColorTemperature",
-            "caption": "Simulate status for color and color temperature"
-        },
-        {
             "type": "List",
             "name": "Variables",
             "caption": "Variables",
@@ -79,6 +69,16 @@
                 }
             ],
             "values": []
+        },
+        {
+            "type": "Button",
+            "caption": "Update scene profile",
+            "onClick": "PHUE_updateSceneProfileNeu($id);"
+        },
+        {
+            "type": "CheckBox",
+            "name": "stausColorColorTemperature",
+            "caption": "Simulate status for color and color temperature"
         }
     ],
     "actions": [
