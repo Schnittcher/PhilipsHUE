@@ -2,6 +2,12 @@
     "elements": [
         {
             "type": "ValidationTextBox",
+            "name": "DeviceID",
+            "caption": "HUE Device ID",
+            "visible": false
+        },
+        {
+            "type": "ValidationTextBox",
             "name": "ResourceID",
             "caption": "Resource ID"
         },
