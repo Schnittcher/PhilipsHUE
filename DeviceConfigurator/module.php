@@ -6,6 +6,8 @@ class HUEDeviceConfigurator extends IPSModule
 {
     const RESOURCES =
         [
+            'contact'                => '{33022FE1-4A9F-47D3-950C-E60CAF98577C}',
+            'tamper'                 => '{72893563-78CB-4706-BEE4-5F6F8A71CCFA}',
             'motion'                 => '{F8DF1FCA-CA5B-4099-935C-3E563BCC2BE0}',
             'zigbee_connectivity'    => '{88465699-1C57-429B-924A-CAA56F45762F}',
             'light_level'            => '{F8EAC53D-5442-405B-99EC-394046D07141}',

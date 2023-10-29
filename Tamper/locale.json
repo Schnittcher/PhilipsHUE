@@ -1,0 +1,11 @@
+{
+  "translations": {
+    "de": {
+      "Enabled": "Aktiv",
+      "State": "Status",
+      "Changed": "Geändert",
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
+    }
+  }
+}
