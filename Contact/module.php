@@ -32,7 +32,7 @@ class HUEContact extends RessourceModule
     {
         switch ($Ident) {
             case 'enabled':
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'motion', json_encode(['enabled' => $Value]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'contact', json_encode(['enabled' => $Value]));
                 break;
             }
     }
