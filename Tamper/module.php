@@ -37,8 +37,5 @@ class HUETamper extends RessourceModule
                 $this->SetValue('changed', $Data['tamper_reports']['changed']);
             }
         }
-        if (array_key_exists('enabled', $Data)) {
-            $this->SetValue('Enabled', $Data['enabled']);
-        }
     }
 }
