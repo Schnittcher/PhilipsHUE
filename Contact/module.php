@@ -22,7 +22,7 @@ class HUEContact extends RessourceModule
 
         if (!IPS_VariableProfileExists('HUE.Contact')) {
             $this->RegisterProfileStringEx('HUE.Contact', 'Window', '', '', [
-                ['not_contact', $this->Translate('Closed'), '', 0xFF0000],
+                ['no_contact', $this->Translate('Closed'), '', 0xFF0000],
                 ['contact', $this->Translate('Opened'), '', 0x00FF00]
             ]);
         }
