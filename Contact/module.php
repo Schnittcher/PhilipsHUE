@@ -2,16 +2,31 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
+eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
 
 class HUEContact extends RessourceModule
 {
+    use \PhilipsHUE\VariableProfileHelper;
+
     const SERVICE = 'contact';
 
     public static $Variables = [
-        ['state', 'State', VARIABLETYPE_BOOLEAN, '~Window', false, true],
+        ['state', 'State', VARIABLETYPE_STRING, 'HUE.Contact', false, true],
         ['changed', 'Changed', VARIABLETYPE_INTEGER, '', false, true],
         ['enabled', 'Enabled', VARIABLETYPE_BOOLEAN, '~Switch', true, true]
     ];
+
+    public function Create()
+    {
+        parent::Create();
+
+        if (!IPS_VariableProfileExists('HUE.Contact')) {
+            $this->RegisterProfileStringEx('HUE.Contact', 'Window', '', '', [
+                ['not_contact', $this->Translate('Closed'), '', 0xFF0000],
+                ['contact', $this->Translate('Opened'), '', 0x00FF00]
+            ]);
+        }
+    }
 
     public function RequestAction($Ident, $Value)
     {

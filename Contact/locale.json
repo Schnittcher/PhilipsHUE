@@ -3,6 +3,8 @@
     "de": {
       "Enabled": "Aktiv",
       "State": "Status",
+      "Closed": "Geschlossen",
+      "Opened": "Geöffnet",
       "Changed": "Geändert",
       "Variables": "Variablen",
       "Get Device Infos": "Geräteinformationen abrufen"

@@ -3,6 +3,8 @@
     "de": {
       "Enabled": "Aktiv",
       "State": "Status",
+      "Tampered": "Manipuliert",
+      "Not tampered": "Nicht manipuliert",
       "Changed": "Geändert",
       "Variables": "Variablen",
       "Get Device Infos": "Geräteinformationen abrufen"
