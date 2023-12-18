@@ -13,6 +13,11 @@
           "type": "CheckBox",
           "name": "Error207",
           "caption": "Error 207"
+        },
+        {
+          "type": "CheckBox",
+          "name": "Error400",
+          "caption": "Ignore Error 400"
         }
       ]
     }

@@ -11,6 +11,7 @@ class HUEBridge extends IPSModule
         $this->RegisterPropertyString('Host', '');
         $this->RegisterAttributeString('User', '');
         $this->RegisterPropertyBoolean('Error207', false);
+        $this->RegisterPropertyBoolean('Error400', false);
         $this->RequireParent('{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}');
 
         $this->RegisterMessage(IPS_GetInstance($this->InstanceID)['ConnectionID'], IM_CHANGESTATUS);
@@ -200,6 +201,12 @@ class HUEBridge extends IPSModule
                 case 207:
                     if ($this->ReadPropertyBoolean('Error207')) {
                         $this->LogMessage($result['data'][0]['rtype'] . ' - ' . $result['data'][0]['rid'] . ': ' . $result['errors'][0]['description'], KL_WARNING);
+                    }
+                    break;
+                case 400:
+                    if ($this->ReadPropertyBoolean('Error400')) {
+                        $this->SendDebug('Philips HUE sendRequest Error', curl_error($ch) . 'HTTP Code: ' . $headerInfo['http_code'], 0);
+                        return;
                     }
                     return;
                 default:
