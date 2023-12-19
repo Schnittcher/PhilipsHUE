@@ -15,7 +15,8 @@ class HUEDeviceConfigurator extends IPSModule
             'device_power'           => '{B86C3E14-09CC-4EF0-A28C-AA198FC25C51}',
             'button'                 => '{2D52B78D-0A13-485B-8B98-C2E0A6BA2EF1}',
             'light'                  => '{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}',
-            'relative_rotary'        => '{585B4217-36CF-4263-A898-3C2198E7C857}'
+            'relative_rotary'        => '{585B4217-36CF-4263-A898-3C2198E7C857}',
+            'default'                => ''
         ];
 
     public function Create()
@@ -65,7 +66,7 @@ class HUEDeviceConfigurator extends IPSModule
                     continue;
                 }
                 $servicesID++;
-                $Values[] = [
+                $Value = [
                     'parent'                => $key + 1,
                     'id'                    => $servicesID,
                     'DeviceID'              => $Service['rid'],
@@ -75,8 +76,10 @@ class HUEDeviceConfigurator extends IPSModule
                     'ModelID'               => '',
                     'Manufacturername'      => '',
                     'Productname'           => '',
-                    'instanceID'            => $this->getInstanceID($Device['id'], $Service['rid']),
-                    'create'                => [
+                    'instanceID'            => $this->getInstanceID($Device['id'], $Service['rid'])
+                ];
+                if ($this->getModuleIDByType($Service['rtype']) != '') {
+                    $Value['create'] = [
                         'moduleID'      => $this->getModuleIDByType($Service['rtype']),
                         'configuration' => [
                             'DeviceID'      => strval($Device['id']),
@@ -84,8 +87,10 @@ class HUEDeviceConfigurator extends IPSModule
                         ],
                         'name'     => $Device['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
                         'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
-                    ]
-                ];
+                    ];
+                }
+
+                $Values[] = $Value;
             }
         }
         $Form['actions'][0]['values'] = $Values;
@@ -128,11 +133,13 @@ class HUEDeviceConfigurator extends IPSModule
 
     private function getInstanceID($dID, $rID)
     {
-        foreach (self::RESOURCES as $GUID) {
-            $IDs = IPS_GetInstanceListByModuleID($GUID);
-            foreach ($IDs as $id) {
-                if ((strtolower(IPS_GetProperty($id, 'DeviceID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
-                    return $id;
+        foreach (self::RESOURCES as $key => $GUID) {
+            if ($key != 'default') {
+                $IDs = IPS_GetInstanceListByModuleID($GUID);
+                foreach ($IDs as $id) {
+                    if ((strtolower(IPS_GetProperty($id, 'DeviceID')) == strtolower($dID)) && (strtolower(IPS_GetProperty($id, 'ResourceID')) == strtolower($rID))) {
+                        return $id;
+                    }
                 }
             }
         }
@@ -141,6 +148,6 @@ class HUEDeviceConfigurator extends IPSModule
 
     private function getModuleIDByType($type)
     {
-        return isset(self::RESOURCES[$type]) ? self::RESOURCES[$type] : self::RESOURCES['motion']; //TODO Default
+        return isset(self::RESOURCES[$type]) ? self::RESOURCES[$type] : self::RESOURCES['default']; //TODO Default
     }
 }
