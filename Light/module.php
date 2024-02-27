@@ -120,7 +120,7 @@ class HUELight extends RessourceModule
         if (array_key_exists('color', $Data)) {
             IPS_LogMessage('Color Problem', print_r($Data, true));
             if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->CIEToRGB($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
+                $RGB = $this->convertXYToHex($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
                     $DecColor = hexdec(ltrim($RGB, '#'));
                 }
