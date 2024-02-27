@@ -33,6 +33,10 @@ class HUEScene extends RessourceModule
         }
     }
 
+    public function ActivateSceneExt($action) {
+        $this->sendData($this->ReadPropertyString('ResourceID'), 'scene', json_encode(['recall' => ['action' => $action]]));
+    }
+
     protected function mapResultsToValues(array $Data)
     {
         //Nothing
