@@ -57,7 +57,6 @@ class HUELight extends RessourceModule
                 $RGB = $this->HexToRGB($Value);
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
-                //$XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dimming' => ['brightness' => $cie['bri']], 'dynamics' => ['duration' => $duration]]));
                 break;
             }
@@ -81,9 +80,9 @@ class HUELight extends RessourceModule
     {
         $RGB = $this->HexToRGB($color);
         $this->SendDebug('RGB', $RGB, 0);
-        $XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
+        $cie = $this->RGBToXy($RGB);
 
-        $params = ['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]]];
+        $params = ['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]]];
         $params = array_merge($params, $OptParams);
         $params = json_encode($params);
         $this->SendDebug('setColor :: Params', $params, 0);

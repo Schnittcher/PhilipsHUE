@@ -64,9 +64,9 @@ class HUEGroupedLight extends RessourceModule
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
                 $RGB = $this->HexToRGB($Value);
                 $this->SendDebug('RGB', $RGB, 0);
-                $XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
+                $cie = $this->RGBToXy($RGB);
                 $this->SendDebug('Color', $XY, 0);
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]], 'dynamics' => ['duration' => $duration]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
                 if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
                     $this->SetValue('color', $Value);
                 }
@@ -89,9 +89,9 @@ class HUEGroupedLight extends RessourceModule
     {
         $RGB = $this->HexToRGB($color);
         $this->SendDebug('RGB', $RGB, 0);
-        $XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
+        $cie = $this->RGBToXy($RGB);
 
-        $params = ['color' => ['xy' => ['x' => $XY['x'], 'y' => $XY['y']]]];
+        $params = ['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]]];
         $params = array_merge($params, $OptParams);
         $params = json_encode($params);
         $this->SendDebug('setColor :: Params', $params, 0);
@@ -161,7 +161,7 @@ class HUEGroupedLight extends RessourceModule
 
         if (array_key_exists('color', $Data)) {
             if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->CIEToRGB($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
+                $RGB = $this->xyToRGB($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
                     $DecColor = hexdec(ltrim($RGB, '#'));
                 }
