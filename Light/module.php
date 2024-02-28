@@ -58,7 +58,6 @@ class HUELight extends RessourceModule
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
                 //$XY = $this->RGBToCIE($RGB[0], $RGB[1], $RGB[2]);
-                $this->SendDebug('Color', $XY, 0);
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dimming' => ['brightness' => $cie['bri']], 'dynamics' => ['duration' => $duration]]));
                 break;
             }
@@ -119,7 +118,6 @@ class HUELight extends RessourceModule
         }
 
         if (array_key_exists('color', $Data)) {
-            IPS_LogMessage('Color Problem', print_r($Data, true));
             if (array_key_exists('xy', $Data['color'])) {
                 $RGB = $this->xyToRGB($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
