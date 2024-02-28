@@ -118,7 +118,7 @@ class HUELight extends RessourceModule
 
         if (array_key_exists('color', $Data)) {
             if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->xyToRGB($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
+                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
                     $DecColor = hexdec(ltrim($RGB, '#'));
                 }
