@@ -28,6 +28,8 @@ class HUELight extends RessourceModule
         parent::Create();
         $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
+
+        $this->RegisterAttributeInteger('tmpBrightness',0);
     }
 
     public function RequestAction($Ident, $Value)
@@ -57,7 +59,9 @@ class HUELight extends RessourceModule
                 $RGB = $this->HexToRGB($Value);
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dimming' => ['brightness' => $cie['bri']], 'dynamics' => ['duration' => $duration]]));
+                $this->WriteAttributeInteger('tmpBrightness',$cie['bri']);
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
+                //$this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dimming' => ['brightness' => $cie['bri']], 'dynamics' => ['duration' => $duration]]));
                 break;
             }
     }
@@ -118,7 +122,7 @@ class HUELight extends RessourceModule
 
         if (array_key_exists('color', $Data)) {
             if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
+                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->ReadAttributeInteger('tmpBrightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
                     $DecColor = hexdec(ltrim($RGB, '#'));
                 }
