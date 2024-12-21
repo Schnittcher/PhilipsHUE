@@ -66,7 +66,7 @@ class HUEGroupedLight extends RessourceModule
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
                 $this->SendDebug('Color', $XY, 0);
-                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => true], 'color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
                 if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
                     $this->SetValue('color', $Value);
                 }
