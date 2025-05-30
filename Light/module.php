@@ -80,6 +80,12 @@ class HUELight extends RessourceModule
         }
     }
 
+    public function setEffectV2(string $effect)
+    {
+        $params = ['effects_v2' => ['action' => ['effect' => $effect]]];
+        $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode($params));
+    }
+
     public function setColor($color, $OptParams)
     {
         $RGB = $this->HexToRGB($color);
