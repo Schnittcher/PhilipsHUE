@@ -94,11 +94,18 @@ class HUEDiscovery extends IPSModule
                 } else {
                     $hue['IPv4'] = $deviceInfo[0]['IPv4'][0];
                 }
-                $hueData = $this->readBridgeDataFromXML($hue['IPv4']);
-                $hue['deviceName'] = (string) $hueData->device->friendlyName;
-                $hue['modelName'] = (string) $hueData->device->modelName;
-                $hue['modelNumber'] = (string) $hueData->device->modelNumber;
-                $hue['serialNumber'] = (string) $hueData->device->serialNumber;
+                $hueData = @$this->readBridgeDataFromXML($hue['IPv4']);
+                if ($hueData) {
+                    $hue['deviceName'] = (string) $hueData->device->friendlyName;
+                    $hue['modelName'] = (string) $hueData->device->modelName;
+                    $hue['modelNumber'] = (string) $hueData->device->modelNumber;
+                    $hue['serialNumber'] = (string) $hueData->device->serialNumber;
+                } else {
+                    $hue['deviceName'] = 'Hue Bridge (' . $hue['IPv4'] . ')';
+                    $hue['modelName'] = '-';
+                    $hue['modelNumber'] = '-';
+                    $hue['serialNumber'] = '-';
+                }
                 array_push($bridges, $hue);
             }
         }
