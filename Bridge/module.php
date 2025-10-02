@@ -107,7 +107,9 @@ class HUEBridge extends IPSModule
         } else {
             $this->SendDebug(__FUNCTION__ . 'Pairing failed', json_encode($result), 0);
             $this->SetStatus(200);
-            $this->LogMessage('Error: ' . $result[0]['error']['type'] . ': ' . $result[0]['error']['description'], KL_ERROR);
+            if (@isset($result[0]['error']['type'])) {
+                $this->LogMessage('Error: ' . $result[0]['error']['type'] . ': ' . $result[0]['error']['description'], KL_ERROR);
+            }
         }
     }
 
@@ -194,12 +196,12 @@ class HUEBridge extends IPSModule
             } else {
                 $this->LogMessage('Philips HUE sendRequest Error' . curl_error($ch), 10205);
                 //$this->SetStatus(201);
-                return new stdClass();
+                return;
             }
         } else {
-            $result = json_decode($apiResult, true);
             switch ($headerInfo['http_code']) {
                 case 207:
+                    $result = json_decode($apiResult, true);
                     if ($this->ReadPropertyBoolean('Error207')) {
                         $this->LogMessage($result['data'][0]['rtype'] . ' - ' . $result['data'][0]['rid'] . ': ' . $result['errors'][0]['description'], KL_WARNING);
                     }
@@ -212,7 +214,7 @@ class HUEBridge extends IPSModule
                     return;
                 default:
                     $this->LogMessage('Philips HUE sendRequest Error - Curl Error:' . curl_error($ch) . 'HTTP Code: ' . $headerInfo['http_code'], 10205);
-                    return new stdClass();
+                    return;
             }
         }
         curl_close($ch);
