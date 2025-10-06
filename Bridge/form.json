@@ -65,7 +65,7 @@
     {
       "code": 200,
       "icon": "error",
-      "caption": "Registration complete, more Information in IP-Symcon Log"
+      "caption": "Registration incomplete, more Information in IP-Symcon Log"
     },
     {
       "code": 201,
