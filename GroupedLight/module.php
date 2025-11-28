@@ -18,6 +18,7 @@ class HUEGroupedLight extends RessourceModule
         ['brightness', 'Brightness', VARIABLETYPE_INTEGER, '~Intensity.100', true, true],
         ['color', 'Color', VARIABLETYPE_INTEGER, '~HexColor', true, true],
         ['color_temperature', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperature', true, true],
+        ['color_temperature_kelvin', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperatureKelvin', true, true],
         ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true],
         ['scene', 'Scene', VARIABLETYPE_STRING, '', true, true],
     ];
@@ -28,6 +29,7 @@ class HUEGroupedLight extends RessourceModule
 
         $this->RegisterPropertyBoolean('stausColorColorTemperature', false);
         $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
+        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperatureKelvin', 'Intensity', '', ' K', 2000, 6535, 1);
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
     }
 
@@ -55,6 +57,14 @@ class HUEGroupedLight extends RessourceModule
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => true], 'color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $duration]]));
                 if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
                     $this->SetValue('color_temperature', $Value);
+                }
+                break;
+            case 'color_temperature_kelvin':
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $mirek = round(1000000 / $Value);
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color_temperature' => ['mirek' => $mirek], 'dynamics' => ['duration' => $duration]]));
+                if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
+                    $this->SetValue('color_temperature_kelvin', $Value);
                 }
                 break;
             case 'transition':

@@ -20,6 +20,7 @@ class HUELight extends RessourceModule
         ['brightness', 'Brightness', VARIABLETYPE_INTEGER, '~Intensity.100', true, true],
         ['color', 'Color', VARIABLETYPE_INTEGER, '~HexColor', true, true],
         ['color_temperature', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperature', true, true],
+        ['color_temperature_kelvin', 'Color Temperature Kelvin', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperatureKelvin', true, true],
         ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true]
     ];
 
@@ -27,6 +28,7 @@ class HUELight extends RessourceModule
     {
         parent::Create();
         $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
+        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperatureKelvin', 'Intensity', '', ' K', 2000, 6535, 1);
         $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
 
         $this->RegisterAttributeInteger('tmpBrightness', 0);
@@ -50,6 +52,11 @@ class HUELight extends RessourceModule
             case 'color_temperature':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color_temperature' => ['mirek' => $Value], 'dynamics' => ['duration' => $duration]]));
+                break;
+            case 'color_temperature_kelvin':
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $mirek = round(1000000 / $Value);
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color_temperature' => ['mirek' => $mirek], 'dynamics' => ['duration' => $duration]]));
                 break;
             case 'transition':
                 $this->SetValue('transition', $Value);
@@ -122,6 +129,7 @@ class HUELight extends RessourceModule
             if (array_key_exists('mirek', $Data['color_temperature'])) {
                 if ($Data['color_temperature']['mirek'] != null) { //Bei Lampen, welche nicht von Philips sind, kann es zu Problemen mit der Farbtemperatur kommen
                     $this->SetValue('color_temperature', $Data['color_temperature']['mirek']);
+                    $this->SetValue('color_temperature_kelvin', 1000000 / $Data['color_temperature']['mirek']);
                 }
             }
         }
