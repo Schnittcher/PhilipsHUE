@@ -1,0 +1,10 @@
+{
+  "translations": {
+    "de": {
+      "Enabled": "Aktiv",
+      "Motion": "Bewegung",
+      "Variables": "Variablen",
+      "Get Device Infos": "Geräteinformationen abrufen"
+    }
+  }
+}

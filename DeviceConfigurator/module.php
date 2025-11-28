@@ -6,17 +6,18 @@ class HUEDeviceConfigurator extends IPSModule
 {
     const RESOURCES =
         [
-            'contact'                => '{33022FE1-4A9F-47D3-950C-E60CAF98577C}',
-            'tamper'                 => '{72893563-78CB-4706-BEE4-5F6F8A71CCFA}',
-            'motion'                 => '{F8DF1FCA-CA5B-4099-935C-3E563BCC2BE0}',
-            'zigbee_connectivity'    => '{88465699-1C57-429B-924A-CAA56F45762F}',
-            'light_level'            => '{F8EAC53D-5442-405B-99EC-394046D07141}',
-            'temperature'            => '{93B25D1B-5630-4A3E-8BA9-FD2B4D4177F0}',
-            'device_power'           => '{B86C3E14-09CC-4EF0-A28C-AA198FC25C51}',
-            'button'                 => '{2D52B78D-0A13-485B-8B98-C2E0A6BA2EF1}',
-            'light'                  => '{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}',
-            'relative_rotary'        => '{585B4217-36CF-4263-A898-3C2198E7C857}',
-            'default'                => ''
+            'contact'                 => '{33022FE1-4A9F-47D3-950C-E60CAF98577C}',
+            'tamper'                  => '{72893563-78CB-4706-BEE4-5F6F8A71CCFA}',
+            'motion'                  => '{F8DF1FCA-CA5B-4099-935C-3E563BCC2BE0}',
+            'zigbee_connectivity'     => '{88465699-1C57-429B-924A-CAA56F45762F}',
+            'light_level'             => '{F8EAC53D-5442-405B-99EC-394046D07141}',
+            'temperature'             => '{93B25D1B-5630-4A3E-8BA9-FD2B4D4177F0}',
+            'device_power'            => '{B86C3E14-09CC-4EF0-A28C-AA198FC25C51}',
+            'button'                  => '{2D52B78D-0A13-485B-8B98-C2E0A6BA2EF1}',
+            'light'                   => '{87FA14D1-0ACA-4CBD-BE83-BA4DF8831876}',
+            'relative_rotary'         => '{585B4217-36CF-4263-A898-3C2198E7C857}',
+            'convenience_area_motion' => '{03C8B286-02B7-2381-7726-DBFA551EBA5B}',
+            'default'                 => ''
         ];
 
     public function Create()
