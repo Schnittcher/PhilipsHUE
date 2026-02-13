@@ -67,6 +67,14 @@ class HUEDiscovery extends IPSModule
                             'configuration' => [
                                 'Host' => $Bridge['IPv4']
                             ]
+                        ],
+                        [
+                            'moduleID'      => '{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}',
+                            'configuration' => [
+                                'URL'        => 'https://' . $Bridge['IPv4'] . '/eventstream/clip/v2',
+                                'VerifyPeer' => false,
+                                'VerifyHost' => false
+                            ]
                         ]
                     ]
                 ];
