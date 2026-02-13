@@ -72,7 +72,6 @@ class RessourceModule extends IPSModule
     public function ApplyChanges()
     {
         parent::ApplyChanges();
-        $this->ConnectParent('{6EFF1F3C-DF5F-43F7-DF44-F87EFF149566}');
 
         //Setze Filter für ReceiveData
         $ResourceID = $this->ReadPropertyString('ResourceID');
