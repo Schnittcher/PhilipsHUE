@@ -7,6 +7,9 @@ class HUEDiscovery extends IPSModule
 {
     use \PhilipsHUE\DebugHelper;
 
+    const DISCOVERY_SEMAPHORE_TIMEOUT = 100;
+    const BRIDGE_REQUEST_TIMEOUT = 2;
+
     const CONFIGURATORS =
     [
         'Device Configurator'                 => '{52399872-F02A-4BEB-ACA0-1F6AE04D9663}',
@@ -29,7 +32,24 @@ class HUEDiscovery extends IPSModule
     public function GetConfigurationForm()
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $Bridges = $this->mDNSDiscoverBridges();
+        $Bridges = json_decode($this->GetBuffer('DiscoveryCache'), true);
+        if (!is_array($Bridges)) {
+            $Bridges = [];
+        }
+
+        $semaphoreName = 'PhilipsHUE.Discovery.' . $this->InstanceID;
+        if (IPS_SemaphoreEnter($semaphoreName, self::DISCOVERY_SEMAPHORE_TIMEOUT)) {
+            try {
+                $Bridges = $this->mDNSDiscoverBridges();
+                $this->SetBuffer('DiscoveryCache', json_encode($Bridges));
+            } catch (\Throwable $e) {
+                $this->SendDebug('Discovery failed', $e->getMessage(), 0);
+            } finally {
+                IPS_SemaphoreLeave($semaphoreName);
+            }
+        } else {
+            $this->SendDebug('Discovery busy', 'Returning cached discovery result', 0);
+        }
 
         $Values = [];
         $configuratorID = 9000;
@@ -122,11 +142,21 @@ class HUEDiscovery extends IPSModule
 
     private function readBridgeDataFromXML($ip)
     {
-        $XMLData = file_get_contents('http://' . $ip . ':80/description.xml');
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => self::BRIDGE_REQUEST_TIMEOUT
+            ]
+        ]);
+        $XMLData = @file_get_contents('http://' . $ip . ':80/description.xml', false, $context);
         if ($XMLData === false) {
             return;
         }
-        $Xml = new SimpleXMLElement($XMLData);
+        try {
+            $Xml = new SimpleXMLElement($XMLData);
+        } catch (\Exception $e) {
+            $this->SendDebug('Invalid bridge description', $e->getMessage(), 0);
+            return;
+        }
 
         $modelName = (string) $Xml->device->modelName;
         if (strpos($modelName, 'Philips hue bridge') === false) {
