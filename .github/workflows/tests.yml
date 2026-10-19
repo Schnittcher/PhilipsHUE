@@ -1,0 +1,8 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    # Zentrale Testausführung aus dem Repository Symcon_CI. v1 wird dort bewusst weitergeschoben.
+    uses: Schnittcher/Symcon_CI/.github/workflows/tests.yml@v1
