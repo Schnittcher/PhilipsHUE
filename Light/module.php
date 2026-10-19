@@ -3,17 +3,18 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
 
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/ColorHelper.php') . '}');
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
+// Der Trait wird nur einmal deklariert, auch wenn mehrere Module der Bibliothek im selben PHP-Prozess geladen werden.
+if (!trait_exists('PhilipsHUE\DebugHelper', false)) {
+    eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
+}
+require_once __DIR__ . '/../libs/ColorHelperStrict.php';
 
 class HUELight extends RessourceModule
 {
     use \PhilipsHUE\DebugHelper;
-    use \PhilipsHUE\ColorHelper;
-    use \PhilipsHUE\VariableProfileHelper;
+    use \PhilipsHUE\ColorHelperStrict;
 
-    const SERVICE = 'light';
+    public const SERVICE = 'light';
 
     public static $Variables = [
         ['on', 'State', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
@@ -24,21 +25,17 @@ class HUELight extends RessourceModule
         ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true]
     ];
 
-    public function Create()
+    public function Create(): void
     {
         parent::Create();
-        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
-        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperatureKelvin', 'Intensity', '', ' K', 2000, 6535, 1);
-        $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
 
         $this->RegisterAttributeInteger('tmpBrightness', 0);
     }
 
-    public function RequestAction($Ident, $Value)
+    public function RequestAction(string $Ident, mixed $Value): void
     {
         switch ($Ident) {
-            case
-             'on':
+            case 'on':
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => $Value]]));
                 break;
             case 'brightness':
@@ -63,22 +60,22 @@ class HUELight extends RessourceModule
                 break;
             case 'color':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
-                $RGB = $this->HexToRGB($Value);
+                $RGB = $this->HexToRGB((int) $Value);
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
                 $this->WriteAttributeInteger('tmpBrightness', $cie['bri']);
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
                 //$this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dimming' => ['brightness' => $cie['bri']], 'dynamics' => ['duration' => $duration]]));
                 break;
-            }
+        }
     }
 
-    public function setAlert()
+    public function setAlert(): void
     {
         $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['alert' => ['action' => 'breathe']]));
     }
 
-    public function setEffect(string $effect, int $duration)
+    public function setEffect(string $effect, int $duration): void
     {
         if ($duration == 0) {
             $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['effect' => ['effect' => $effect]]));
@@ -87,13 +84,13 @@ class HUELight extends RessourceModule
         }
     }
 
-    public function setEffectV2(string $effect)
+    public function setEffectV2(string $effect): void
     {
         $params = ['effects_v2' => ['action' => ['effect' => $effect]]];
         $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode($params));
     }
 
-    public function setColor($color, $OptParams)
+    public function setColor(int $color, array $OptParams): void
     {
         $RGB = $this->HexToRGB($color);
         $this->SendDebug('RGB', $RGB, 0);
@@ -104,10 +101,9 @@ class HUELight extends RessourceModule
         $params = json_encode($params);
         $this->SendDebug('setColor :: Params', $params, 0);
         $this->sendData($this->ReadPropertyString('ResourceID'), 'light', $params);
-        return;
     }
 
-    protected function mapResultsToValues(array $Data)
+    protected function mapResultsToValues(array $Data): void
     {
         if (array_key_exists('on', $Data)) {
             if (array_key_exists('on', $Data)) {
@@ -138,9 +134,8 @@ class HUELight extends RessourceModule
             if (array_key_exists('xy', $Data['color'])) {
                 $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->ReadAttributeInteger('tmpBrightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
-                    $DecColor = hexdec(ltrim($RGB, '#'));
+                    $this->SetValue('color', hexdec(ltrim($RGB, '#')));
                 }
-                $this->SetValue('color', $DecColor);
             }
         }
     }

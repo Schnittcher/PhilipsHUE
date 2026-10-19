@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-class HUEBridge extends IPSModule
+class HUEBridge extends IPSModuleStrict
 {
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
@@ -12,12 +12,14 @@ class HUEBridge extends IPSModule
         $this->RegisterAttributeString('User', '');
         $this->RegisterPropertyBoolean('Error207', false);
         $this->RegisterPropertyBoolean('Error400', false);
-        $this->RequireParent('{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}');
-
-        $this->RegisterMessage(IPS_GetInstance($this->InstanceID)['ConnectionID'], IM_CHANGESTATUS);
     }
 
-    public function ApplyChanges()
+    public function GetCompatibleParents(): string
+    {
+        return json_encode(['type' => 'require', 'moduleIDs' => ['{2FADB4B7-FDAB-3C64-3E2C-068A4809849A}']]);
+    }
+
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
@@ -30,12 +32,12 @@ class HUEBridge extends IPSModule
         }
     }
 
-    public function RegisterServerEvents()
+    public function RegisterServerEvents(): void
     {
         $this->GetConfigurationForParent();
     }
 
-    public function GetConfigurationForParent()
+    public function GetConfigurationForParent(): string
     {
         $url = 'https://' . $this->ReadPropertyString('Host') . '/eventstream/clip/v2';
         $this->SendDebug('GetConfigurationForParent :: url', $url, 0);
@@ -49,10 +51,11 @@ class HUEBridge extends IPSModule
         return json_encode($settings, JSON_UNESCAPED_SLASHES);
     }
 
-    public function ForwardData($JSONString)
+    public function ForwardData(string $JSONString): string
     {
         $this->SendDebug(__FUNCTION__, $JSONString, 0);
         $data = json_decode($JSONString, true);
+        $result = [];
 
         switch ($data['Buffer']['Command']) {
             case 'getDevices':
@@ -77,14 +80,14 @@ class HUEBridge extends IPSModule
                 $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/' . $data['Buffer']['endpoint'] . '/' . $data['Buffer']['rid'], '', 'GET');
                 break;
             default:
-            $this->SendDebug(__FUNCTION__, 'Invalid Command: ' . $data->Buffer->Command, 0);
-            break;
+                $this->SendDebug(__FUNCTION__, 'Invalid Command: ' . $data['Buffer']['Command'], 0);
+                break;
         }
         $this->SendDebug(__FUNCTION__, json_encode($result), 0);
         return json_encode($result);
     }
 
-    public function ReceiveData($JSONString)
+    public function ReceiveData(string $JSONString): string
     {
         $HUEDatas = json_decode($JSONString, true);
         $HUEDatas = json_decode($HUEDatas['Data'], true);
@@ -93,14 +96,15 @@ class HUEBridge extends IPSModule
             $Data['Data'] = $HUEData['data'];
             $this->SendDataToChildren(json_encode($Data));
         }
+        return '';
     }
 
-    public function registerUser()
+    public function registerUser(): void
     {
         $params['devicetype'] = 'Symcon';
         $result = $this->sendRequest('', '', json_encode($params), 'POST');
         if (@isset($result[0]['success']['username'])) {
-            $this->SendDebug('Register User', 'OK: ' . $result[0]['success']['username'], 0);
+            $this->SendDebug('Register User', 'OK', 0);
             $this->WriteAttributeString('User', $result[0]['success']['username']);
             $this->RegisterServerEvents();
             $this->SetStatus(102);
@@ -113,30 +117,30 @@ class HUEBridge extends IPSModule
         }
     }
 
-    public function getDevices()
+    public function getDevices(): mixed
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/device', '', 'GET');
     }
 
-    public function getRooms()
+    public function getRooms(): mixed
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/room', '', 'GET');
     }
 
-    public function getZones()
+    public function getZones(): mixed
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/zone', '', 'GET');
     }
 
-    public function getScenes()
+    public function getScenes(): mixed
     {
         return $this->sendRequest($this->ReadAttributeString('User'), 'resource/scene', '', 'GET');
     }
 
-    public function getScenesbyGroup()
+    public function getScenesbyGroup(): array
     {
         $result = $this->sendRequest($this->ReadAttributeString('User'), 'resource/scene', '', 'GET');
-        $data = $result['data'];
+        $data = $result['data'] ?? [];
         $Scenes = [];
         foreach ($data as $key => $scene) {
             if (!array_key_exists($scene['group']['rid'], $Scenes)) {
@@ -150,15 +154,15 @@ class HUEBridge extends IPSModule
     private function sendRequest(string $User, string $endpoint, string $params, string $method = 'GET')
     {
         if ($this->ReadPropertyString('Host') == '') {
-            return false;
+            return [];
         }
 
-        $this->SendDebug('User', $User, 0);
         $ch = curl_init();
         if ($User != '' && $endpoint != '') {
             $this->SendDebug(__FUNCTION__ . ' URL', 'https://' . $this->ReadPropertyString('Host') . '/clip/v2/' . $endpoint, 0);
             curl_setopt($ch, CURLOPT_URL, 'https://' . $this->ReadPropertyString('Host') . '/clip/v2/' . $endpoint);
         } elseif ($endpoint != '') {
+            curl_close($ch);
             return [];
         } else {
             $this->SendDebug(__FUNCTION__ . ' URL', $this->ReadPropertyString('Host') . '/api/' . $endpoint, 0);
@@ -191,12 +195,14 @@ class HUEBridge extends IPSModule
         $headerInfo = curl_getinfo($ch);
         if ($headerInfo['http_code'] == 200) {
             if ($apiResult != false) {
+                curl_close($ch);
                 $this->SetStatus(102);
                 return json_decode($apiResult, true);
             } else {
                 $this->LogMessage('Philips HUE sendRequest Error' . curl_error($ch), 10205);
                 //$this->SetStatus(201);
-                return;
+                curl_close($ch);
+                return [];
             }
         } else {
             switch ($headerInfo['http_code']) {
@@ -209,15 +215,15 @@ class HUEBridge extends IPSModule
                 case 400:
                     if ($this->ReadPropertyBoolean('Error400')) {
                         $this->SendDebug('Philips HUE sendRequest Error', curl_error($ch) . 'HTTP Code: ' . $headerInfo['http_code'], 0);
-                        return;
                     }
-                    return;
+                    break;
                 default:
                     $this->LogMessage('Philips HUE sendRequest Error - Curl Error:' . curl_error($ch) . 'HTTP Code: ' . $headerInfo['http_code'], 10205);
-                    return;
+                    break;
             }
         }
         curl_close($ch);
+        return [];
     }
 
     private function BridgePaired()

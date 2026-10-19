@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
 
 class HUEContact extends RessourceModule
 {
-    use \PhilipsHUE\VariableProfileHelper;
-
-    const SERVICE = 'contact';
+    public const SERVICE = 'contact';
 
     public static $Variables = [
         ['state', 'State', VARIABLETYPE_STRING, 'HUE.Contact', false, true],
@@ -16,28 +13,16 @@ class HUEContact extends RessourceModule
         ['enabled', 'Enabled', VARIABLETYPE_BOOLEAN, '~Switch', true, true]
     ];
 
-    public function Create()
-    {
-        parent::Create();
-
-        if (!IPS_VariableProfileExists('HUE.Contact')) {
-            $this->RegisterProfileStringEx('HUE.Contact', 'Window', '', '', [
-                ['no_contact', $this->Translate('Opened'), '', 0xFF0000],
-                ['contact', $this->Translate('Closed'), '', 0x00FF00]
-            ]);
-        }
-    }
-
-    public function RequestAction($Ident, $Value)
+    public function RequestAction(string $Ident, mixed $Value): void
     {
         switch ($Ident) {
             case 'enabled':
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'contact', json_encode(['enabled' => $Value]));
                 break;
-            }
+        }
     }
 
-    protected function mapResultsToValues(array $Data)
+    protected function mapResultsToValues(array $Data): void
     {
         if (array_key_exists('contact_report', $Data)) {
             if (array_key_exists('state', $Data['contact_report'])) {
@@ -48,7 +33,7 @@ class HUEContact extends RessourceModule
             }
         }
         if (array_key_exists('enabled', $Data)) {
-            $this->SetValue('Enabled', $Data['enabled']);
+            $this->SetValue('enabled', $Data['enabled']);
         }
     }
 }

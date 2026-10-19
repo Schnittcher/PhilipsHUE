@@ -1,32 +1,35 @@
 <?php
 
 declare(strict_types=1);
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
+// Der Trait wird nur einmal deklariert, auch wenn mehrere Module der Bibliothek im selben PHP-Prozess geladen werden.
+if (!trait_exists('PhilipsHUE\DebugHelper', false)) {
+    eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
+}
 
-class HUEDiscovery extends IPSModule
+class HUEDiscovery extends IPSModuleStrict
 {
     use \PhilipsHUE\DebugHelper;
 
-    const CONFIGURATORS =
-    [
-        'Device Configurator'                 => '{52399872-F02A-4BEB-ACA0-1F6AE04D9663}',
-        'Room Configurator'                   => '{943D4F07-294C-4FFC-98E1-82E78D3B4584}',
-        'Zone Configurator'                   => '{2DCB7BB9-4634-4419-AE68-C0CC771547E5}'
-    ];
+    public const CONFIGURATORS =
+        [
+            'Device Configurator'                 => '{52399872-F02A-4BEB-ACA0-1F6AE04D9663}',
+            'Room Configurator'                   => '{943D4F07-294C-4FFC-98E1-82E78D3B4584}',
+            'Zone Configurator'                   => '{2DCB7BB9-4634-4419-AE68-C0CC771547E5}'
+        ];
 
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
     }
 
-    public function GetConfigurationForm()
+    public function GetConfigurationForm(): string
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
         $Bridges = $this->mDNSDiscoverBridges();
@@ -84,7 +87,7 @@ class HUEDiscovery extends IPSModule
         return json_encode($Form);
     }
 
-    public function mDNSDiscoverBridges()
+    public function mDNSDiscoverBridges(): array
     {
         $mDNSInstanceIDs = IPS_GetInstanceListByModuleID('{780B2D48-916C-4D59-AD35-5A429B2355A5}');
         $resultServiceTypes = ZC_QueryServiceType($mDNSInstanceIDs[0], '_hue._tcp', '');

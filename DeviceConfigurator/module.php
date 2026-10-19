@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-class HUEDeviceConfigurator extends IPSModule
+class HUEDeviceConfigurator extends IPSModuleStrict
 {
-    const RESOURCES =
+    public const RESOURCES =
         [
             'contact'                 => '{33022FE1-4A9F-47D3-950C-E60CAF98577C}',
             'tamper'                  => '{72893563-78CB-4706-BEE4-5F6F8A71CCFA}',
@@ -20,24 +20,33 @@ class HUEDeviceConfigurator extends IPSModule
             'default'                 => ''
         ];
 
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
-        $this->ConnectParent('{6786AF05-B089-4BD0-BABA-B2B864CF92E3}');
         $this->RegisterPropertyString('Serialnumber', '');
         $this->RegisterPropertyInteger('TargetCategory', 0);
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
     }
 
-    public function GetConfigurationForm()
+    public function GetCompatibleParents(): string
+    {
+        return json_encode(['type' => 'connect', 'moduleIDs' => ['{6786AF05-B089-4BD0-BABA-B2B864CF92E3}']]);
+    }
+
+    public function GetConfigurationForm(): string
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
+
+        if (!$this->HasActiveParent()) {
+            array_unshift($Form['elements'], ['type' => 'Label', 'caption' => 'The bridge is not connected. Open the bridge instance and pair it with IP-Symcon first.']);
+            return json_encode($Form);
+        }
 
         $Devices = $this->getDevices();
 
@@ -108,7 +117,7 @@ class HUEDeviceConfigurator extends IPSModule
         $Buffer['Params'] = '';
         $Data['Buffer'] = $Buffer;
         $Data = json_encode($Data);
-        $result = json_decode($this->SendDataToParent($Data), true);
+        $result = json_decode((string) $this->SendDataToParent($Data), true);
         if (!$result) {
             return [];
         }

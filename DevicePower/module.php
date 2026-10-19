@@ -5,14 +5,14 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class HUEDevicePower extends RessourceModule
 {
-    const SERVICE = 'device_power';
+    public const SERVICE = 'device_power';
 
     public static $Variables = [
         ['battery_level', 'Battery Level', VARIABLETYPE_INTEGER, '~Battery.100', false, true],
         ['battery_state', 'Battery State', VARIABLETYPE_STRING, '', false, true],
     ];
 
-    protected function mapResultsToValues(array $Data)
+    protected function mapResultsToValues(array $Data): void
     {
         if (array_key_exists('power_state', $Data)) {
             if (array_key_exists('battery_level', $Data['power_state'])) {

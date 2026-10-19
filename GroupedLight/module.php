@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/../libs/ResourceModule.php';
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/ColorHelper.php') . '}');
-eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/VariableProfileHelper.php') . '}');
+// Der Trait wird nur einmal deklariert, auch wenn mehrere Module der Bibliothek im selben PHP-Prozess geladen werden.
+if (!trait_exists('PhilipsHUE\DebugHelper', false)) {
+    eval('declare(strict_types=1);namespace PhilipsHUE {?>' . file_get_contents(__DIR__ . '/../libs/vendor/SymconModulHelper/DebugHelper.php') . '}');
+}
+require_once __DIR__ . '/../libs/ColorHelperStrict.php';
 
 class HUEGroupedLight extends RessourceModule
 {
     use \PhilipsHUE\DebugHelper;
-    use \PhilipsHUE\ColorHelper;
-    use \PhilipsHUE\VariableProfileHelper;
-    const SERVICE = 'grouped_light';
+    use \PhilipsHUE\ColorHelperStrict;
+    public const SERVICE = 'grouped_light';
 
     public static $Variables = [
         ['on', 'State', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
@@ -23,22 +24,24 @@ class HUEGroupedLight extends RessourceModule
         ['scene', 'Scene', VARIABLETYPE_STRING, '', true, true],
     ];
 
-    public function Create()
+    public function Create(): void
     {
         parent::Create();
 
         $this->RegisterPropertyBoolean('stausColorColorTemperature', false);
-        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperature', 'Intensity', '', ' mired', 153, 500, 1);
-        $this->RegisterProfileInteger('PhilipsHUE.ColorTemperatureKelvin', 'Intensity', '', ' K', 2000, 6535, 1);
-        $this->RegisterProfileInteger('PhilipsHUE.Transition', 'Intensity', '', ' ms', 0, 0, 1);
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         parent::ApplyChanges();
+
+        // Die Szenen der Gruppe sind Teil der Darstellung von "scene" und gehen beim Pflegen der Variablen verloren.
+        if ($this->HasActiveParent()) {
+            $this->updateSceneProfileNeu();
+        }
     }
 
-    public function RequestAction($Ident, $Value)
+    public function RequestAction(string $Ident, mixed $Value): void
     {
         switch ($Ident) {
             case 'on':
@@ -72,7 +75,7 @@ class HUEGroupedLight extends RessourceModule
                 break;
             case 'color':
                 $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
-                $RGB = $this->HexToRGB($Value);
+                $RGB = $this->HexToRGB((int) $Value);
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
                 $this->SendDebug('Color', $cie, 0);
@@ -81,21 +84,18 @@ class HUEGroupedLight extends RessourceModule
                     $this->SetValue('color', $Value);
                 }
                 break;
-            case 'transition':
-                $this->SetValue('transition', $Value);
-                break;
             case 'scene':
                 $this->sendData($Value, 'scene', json_encode(['recall' => ['action' => 'active']]));
                 break;
-            }
+        }
     }
 
-    public function setAlert()
+    public function setAlert(): void
     {
         $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['alert' => ['action' => 'breathe']]));
     }
 
-    public function setColor($color, $OptParams)
+    public function setColor(int $color, array $OptParams): void
     {
         $RGB = $this->HexToRGB($color);
         $this->SendDebug('RGB', $RGB, 0);
@@ -106,36 +106,28 @@ class HUEGroupedLight extends RessourceModule
         $params = json_encode($params);
         $this->SendDebug('setColor :: Params', $params, 0);
         $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', $params);
-        return;
     }
 
-    public function updateSceneProfileNeu()
+    public function updateSceneProfileNeu(): void
     {
-        $ProfileName = 'PHUE.Scene.' . $this->ReadPropertyString('ResourceID');
-        if (IPS_VariableProfileExists($ProfileName)) {
-            IPS_DeleteVariableProfile($ProfileName);
-        }
         $scenes = $this->getScenesbyGroup();
-        $Associations = [];
-
         $RoomZoneID = $this->ReadPropertyString('RoomZoneID');
 
         if (array_key_exists($RoomZoneID, $scenes)) {
-            foreach ($scenes[$RoomZoneID] as $key => $scene) {
-                $Associations[] = [$scene['id'], $scene['metadata']['name'], '', 0x000000];
+            $Options = [];
+            foreach ($scenes[$RoomZoneID] as $scene) {
+                $Options[] = [$scene['id'], $scene['metadata']['name'], -1];
             }
-            $this->RegisterProfileStringEx($ProfileName, 'Light', '', '', $Associations);
 
             $variableID = $this->GetIDForIdent('scene');
             if (IPS_VariableExists($variableID)) {
                 $position = IPS_GetObject($variableID)['ObjectPosition'];
-                $this->RegisterVariableString('scene', $this->Translate('Scene'), $ProfileName, $position);
-                //IPS_SetVariableCustomProfile($variableID, $ProfileName);
+                $this->RegisterVariableString('scene', $this->Translate('Scene'), $this->enumerationOptions($Options, false), $position);
             }
         }
     }
 
-    public function getOwnerInfo()
+    public function getOwnerInfo(): ?array
     {
         $groupedLight = json_decode($this->getData($this->ReadPropertyString('ResourceID'), 'grouped_light'), true);
         $groupedLightOwnerType = $groupedLight['data'][0]['owner']['rtype'];
@@ -143,7 +135,7 @@ class HUEGroupedLight extends RessourceModule
         return $result['data'][0];
     }
 
-    protected function mapResultsToValues(array $Data)
+    protected function mapResultsToValues(array $Data): void
     {
         if (array_key_exists('on', $Data)) {
             if (array_key_exists('on', $Data)) {
@@ -171,11 +163,10 @@ class HUEGroupedLight extends RessourceModule
 
         if (array_key_exists('color', $Data)) {
             if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->GetValue('brightness'));
+                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], (int) $this->GetValue('brightness'));
                 if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
-                    $DecColor = hexdec(ltrim($RGB, '#'));
+                    $this->SetValue('color', hexdec(ltrim($RGB, '#')));
                 }
-                $this->SetValue('color', $DecColor);
             }
         }
     }
@@ -190,7 +181,7 @@ class HUEGroupedLight extends RessourceModule
         $Buffer['Params'] = '';
         $Data['Buffer'] = $Buffer;
         $Data = json_encode($Data);
-        $result = json_decode($this->SendDataToParent($Data), true);
+        $result = json_decode((string) $this->SendDataToParent($Data), true);
         if (!$result) {
             return [];
         }

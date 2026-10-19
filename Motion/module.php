@@ -5,23 +5,23 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class HUEMotion extends RessourceModule
 {
-    const SERVICE = 'motion';
+    public const SERVICE = 'motion';
 
     public static $Variables = [
         ['motion', 'Motion', VARIABLETYPE_BOOLEAN, '~Motion', false, true],
         ['enabled', 'Enabled', VARIABLETYPE_BOOLEAN, '~Switch', true, true]
     ];
 
-    public function RequestAction($Ident, $Value)
+    public function RequestAction(string $Ident, mixed $Value): void
     {
         switch ($Ident) {
             case 'enabled':
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'motion', json_encode(['enabled' => $Value]));
                 break;
-            }
+        }
     }
 
-    protected function mapResultsToValues(array $Data)
+    protected function mapResultsToValues(array $Data): void
     {
         if (array_key_exists('motion', $Data)) {
             if (array_key_exists('motion', $Data['motion'])) {
@@ -29,7 +29,7 @@ class HUEMotion extends RessourceModule
             }
         }
         if (array_key_exists('enabled', $Data)) {
-            $this->SetValue('Enabled', $Data['enabled']);
+            $this->SetValue('enabled', $Data['enabled']);
         }
     }
 }

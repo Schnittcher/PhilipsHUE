@@ -5,23 +5,23 @@ require_once __DIR__ . '/../libs/ResourceModule.php';
 
 class HUELightLevel extends RessourceModule
 {
-    const SERVICE = 'light_level';
+    public const SERVICE = 'light_level';
 
     public static $Variables = [
         ['enabled', 'Enabled', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
         ['light_level', 'Light Level', VARIABLETYPE_INTEGER, '~Illumination', false, true]
     ];
 
-    public function RequestAction($Ident, $Value)
+    public function RequestAction(string $Ident, mixed $Value): void
     {
         switch ($Ident) {
             case 'enabled':
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light_level', json_encode(['enabled' => $Value]));
                 break;
-            }
+        }
     }
 
-    protected function mapResultsToValues(array $Data)
+    protected function mapResultsToValues(array $Data): void
     {
         if (array_key_exists('light', $Data)) {
             if (array_key_exists('light_level', $Data['light'])) {

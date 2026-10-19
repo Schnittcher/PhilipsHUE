@@ -2,31 +2,40 @@
 
 declare(strict_types=1);
 
-class HUERoomConfigurator extends IPSModule
+class HUERoomConfigurator extends IPSModuleStrict
 {
-    const RESOURCES =
+    public const RESOURCES =
         [
             'grouped_light'                 => '{6324AC4A-330C-4CB2-9281-12EECB450024}'
         ];
 
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
-        $this->ConnectParent('{6786AF05-B089-4BD0-BABA-B2B864CF92E3}');
         $this->RegisterPropertyString('Serialnumber', '');
         $this->RegisterPropertyInteger('TargetCategory', 0);
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         //Never delete this line!
         parent::ApplyChanges();
     }
 
-    public function GetConfigurationForm()
+    public function GetCompatibleParents(): string
+    {
+        return json_encode(['type' => 'connect', 'moduleIDs' => ['{6786AF05-B089-4BD0-BABA-B2B864CF92E3}']]);
+    }
+
+    public function GetConfigurationForm(): string
     {
         $Form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
+
+        if (!$this->HasActiveParent()) {
+            array_unshift($Form['elements'], ['type' => 'Label', 'caption' => 'The bridge is not connected. Open the bridge instance and pair it with IP-Symcon first.']);
+            return json_encode($Form);
+        }
 
         $Rooms = $this->getRooms();
 
@@ -84,7 +93,7 @@ class HUERoomConfigurator extends IPSModule
         $Buffer['Params'] = '';
         $Data['Buffer'] = $Buffer;
         $Data = json_encode($Data);
-        $result = json_decode($this->SendDataToParent($Data), true);
+        $result = json_decode((string) $this->SendDataToParent($Data), true);
         if (!$result) {
             return [];
         }
