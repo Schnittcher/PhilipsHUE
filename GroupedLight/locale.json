@@ -1,16 +1,27 @@
 {
-  "translations": {
-    "de": {
-      "State": "Status",
-      "Brightness": "Helligkeit",
-      "Color": "Farbe",
-      "Color Temperature": "Farbtemperatur",
-      "Scene": "Szene",
-      "Transition": "Übergang",
-      "Variables": "Variablen",
-      "Update scene profile": "Aktualisiere Szenenprofil",
-      "Simulate status for color and color temperature": "Status für Farbe und Farbtemperatur simulieren",
-      "Get Device Infos": "Geräteinformationen abrufen"
+    "translations": {
+        "de": {
+            "HUE Room / Zone ID": "HUE Raum-/Zonen-ID",
+            "HUE Resource ID": "HUE Ressourcen-ID",
+            "Ident": "Ident",
+            "Index": "Index",
+            "Name": "Name",
+            "Type": "Typ",
+            "Profile": "Profil",
+            "Action": "Aktion",
+            "Active": "Aktiv",
+            "Donations": "Spenden / Schenkung",
+            "This module is free for non-commercial use. Donations to support the author are accepted here:    ": "Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    ",
+            "State": "Status",
+            "Brightness": "Helligkeit",
+            "Color": "Farbe",
+            "Color Temperature": "Farbtemperatur",
+            "Scene": "Szene",
+            "Transition": "Übergang",
+            "Variables": "Variablen",
+            "Update scene profile": "Aktualisiere Szenenprofil",
+            "Simulate status for color and color temperature": "Status für Farbe und Farbtemperatur simulieren",
+            "Get Device Infos": "Geräteinformationen abrufen"
+        }
     }
-  }
 }

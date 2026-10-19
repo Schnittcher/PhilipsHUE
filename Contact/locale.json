@@ -1,13 +1,24 @@
 {
-  "translations": {
-    "de": {
-      "Enabled": "Aktiv",
-      "State": "Status",
-      "Closed": "Geschlossen",
-      "Opened": "Geöffnet",
-      "Changed": "Geändert",
-      "Variables": "Variablen",
-      "Get Device Infos": "Geräteinformationen abrufen"
+    "translations": {
+        "de": {
+            "HUE Device ID": "HUE Geräte-ID",
+            "HUE Resource ID": "HUE Ressourcen-ID",
+            "Ident": "Ident",
+            "Index": "Index",
+            "Name": "Name",
+            "Type": "Typ",
+            "Profile": "Profil",
+            "Action": "Aktion",
+            "Active": "Aktiv",
+            "Donations": "Spenden / Schenkung",
+            "This module is free for non-commercial use. Donations to support the author are accepted here:    ": "Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    ",
+            "Enabled": "Aktiv",
+            "State": "Status",
+            "Closed": "Geschlossen",
+            "Opened": "Geöffnet",
+            "Changed": "Geändert",
+            "Variables": "Variablen",
+            "Get Device Infos": "Geräteinformationen abrufen"
+        }
     }
-  }
 }

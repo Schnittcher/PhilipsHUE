@@ -92,11 +92,11 @@
         },
         {
             "type": "Label",
-            "caption": "Spenden / Schenkung"
+            "caption": "Donations"
         },
         {
             "type": "Label",
-            "caption": "Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    "
+            "caption": "This module is free for non-commercial use. Donations to support the author are accepted here:    "
         },
         {
             "type": "RowLayout",

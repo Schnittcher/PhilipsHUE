@@ -1,12 +1,17 @@
 {
-  "translations": {
-    "de": {
-      "Serialnumber": "Seriennummer",
-      "Configurator to find all HUE Rooms": "Konfigurator, um alle HUE-Räume zu finden",
-      "Configurator": "Konfigurator",
-      "Target Category": "Zielkategorie",
-      "Type": "Typ",
-      "Room ID": "Raum ID"
+    "translations": {
+        "de": {
+            "id": "id",
+            "Name": "Name",
+            "The bridge is not connected. Open the bridge instance and pair it with IP-Symcon first.": "Die Bridge ist nicht verbunden. Die Bridge-Instanz öffnen und zuerst mit IP-Symcon koppeln.",
+            "Donations": "Spenden / Schenkung",
+            "This module is free for non-commercial use. Donations to support the author are accepted here:    ": "Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:    ",
+            "Serialnumber": "Seriennummer",
+            "Configurator to find all HUE Rooms": "Konfigurator, um alle HUE-Räume zu finden",
+            "Configurator": "Konfigurator",
+            "Target Category": "Zielkategorie",
+            "Type": "Typ",
+            "Room ID": "Raum ID"
+        }
     }
-  }
 }
