@@ -1,96 +1,44 @@
-# HUEDevice
-   Dieses Modul bildet die verschiedenen HUE Geräte in IP-Symcon ab.
-   Darunter zählen zum Beispiel Sensoren, Lichter, Schalter und Gruppen.
-     
-   ## Inhaltverzeichnis
-   1. [Konfiguration](#1-konfiguration)
-   2. [Funktionen](#2-funktionen)
-   
-   ## 1. Konfiguration
-   
-   Feld | Beschreibung
-   ------------ | ----------------
-   HUE Device ID | Hier wird die ID der HUE Devices eingetragen.
-   Geräte Typ | Auswhal zwischen Licht, Sensor/Schalter und Gruppe
-   Sensor Typ | Nur sichtbar, wenn als Geräte Typ Sensor ausgewählt wurde,hier kann der Typ des Sensors ausgewählt werden.
+# Button
+Diese Instanz stellt den Service Button bereit, der das letzte Ereignis eines Tasters anzeigt. Sie wird normalerweise über den Device Configurator angelegt.
 
-  ## 2. Funktionen
+## Inhaltsverzeichnis
+- [Button](#button)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+  - [1. Konfiguration](#1-konfiguration)
+  - [2. Variablen](#2-variablen)
+  - [3. Funktionen](#3-funktionen)
+  - [4. Spenden](#4-spenden)
+  - [5. Lizenz](#5-lizenz)
 
-  **PHUE_AlertSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich einen Alarm für eine Lampe / Gruppe zu setzen.
-   none: Kein Alarm
-   select: Das Licht führt einen Atemzyklus (breathe cycle) durch.
-   lselect: Die Leuchte führt 15 Sekunden lang oder bis zum Empfang eines Befehls "alert": "none" Atemzyklen (breathe cycle) durch. d.h. nachdem der Atemzyklus (breathe cycle) beendet ist, setzt die Brücke die Warnung nicht auf "none" zurück
-   ```php
-   PHUE_AlertSet($InstanceID, $Value); //string 'none', 'select', 'lselect'
-   ```
+## 1. Konfiguration
 
-   **PHUE_CTSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich die Farbtemperatur der Lampe bzw. der Gruppe zu ändern. Der Wert wird in Integer angegeben werden.
-   ```php
-   PHUE_CTSet(25537, 366); //Farbtemperatur 366
-   ```
+Feld | Beschreibung
+------------ | ----------------
+HUE Geräte-ID | ID des HUE-Geräts. Wird vom Konfigurator gesetzt.
+HUE Ressourcen-ID | ID der HUE-Ressource. Wird vom Konfigurator gesetzt.
+Variablen | Liste der Variablen der Instanz. Mit „Aktiv“ lassen sich einzelne Variablen abwählen.
+Geräteinformationen abrufen | Fragt die Informationen der Ressource bei der Bridge ab (Ausgabe im Debug).
 
-   **PHUE_ColorSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich die Farbe der Lampe bzw. der Gruppe zu ändern. Der Wert wird in Hex angegeben werden.
-   ```php
-   PHUE_ColorSet(25537, '#FF0000'); //Farbe Rot
-   ```
+## 2. Variablen
+Die Variablen entstehen mit der Instanz. In der Konfiguration lassen sich einzelne Variablen über „Aktiv“ abwählen. Die Variablen nutzen die nativen Darstellungen von IP-Symcon.
 
-   **PHUE_DimSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich das Gerät bzw. die Gruppe zu dimmen.
-   ```php
-   PHUE_DimSet(25537, 50); //0-254
-   ```
+Variable | Ident | Typ | Beschreibung
+------------ | ------------ | ------------ | ----------------
+Letztes Ereignis | `last_event` | Text | Letztes Ereignis des Tasters (Erster Tastendruck, Wiederholen, Kurzer Tastendruck, Langer Tastendruck, Doppelter kurzer Tastendruck).
 
-   **PHUE_EffectSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich einen Effekt für die Lampe bzw. Gruppe zu aktiveren.
-   ```php
-   PHUE_EffectSet(25537, 'colorloop'); //Effekt colorloop
-   ```
+## 3. Funktionen
 
-   **PHUE_GetState($InstanceID)**\
-   Mit dieser Funktion ist es möglich den aktuellen Status der lampe / Gruppe abzufragen.
-   ```php
-   PHUE_GetState(25537); //Gibt ture oder false zurück
-   ```
+`void PHUE_updateValues(integer $InstanzID);`
+Liest den aktuellen Zustand der Ressource von der Bridge und aktualisiert die Variablen. Wird beim Übernehmen der Instanz automatisch aufgerufen.
 
-   **PHUE_SatSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich die Sättigung der Lampe bzw. der Gruppe zu ändern. Der Wert wird in Integer angegeben werden.
-   ```php
-   PHUE_SatSet(25537, 50); //Sättigung 50  - 254
-   ```
+`void PHUE_getInfos(integer $InstanzID);`
+Fragt die Ressource bei der Bridge ab (Ausgabe im Debug).
 
-   **PHUE_SceneSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich eine Szene für die Gruppe zu aktiveren.
-   ```php
-   PHUE_SceneSet(25537, 'Name der Szene');
-   ```
+## 4. Spenden
+Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Autor werden hier akzeptiert:
 
-      **PHUE_SceneSetEx($InstanceID, $Value, $Parameter)**\
-   Mit dieser Funktion ist es möglich eine Szene mit erweiterten Parametern für die Gruppe zu aktiveren.
-   ```php
-   PHUE_SceneSetEx(25537, 'Name der Szene', ['transitiontime' => 200]);
-   ```
- 
-   **PHUE_SwitchMode($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich das Gerät ein- bzw. auszuschalten.
-   ```php
-   PHUE_SwitchMode(25537, true); //Einschalten
-   PHUE_SwitchMode(25537, false); //Ausschalten
-   ```
+[![PayPal](https://img.shields.io/badge/PayPal-Spenden-00457C?logo=paypal&logoColor=white&style=for-the-badge)](https://www.paypal.com/donate?hosted_button_id=EK4JRP87XLSHW) [![Amazon Wunschzettel](https://img.shields.io/badge/Amazon-Wunschzettel-FF9900?logo=amazon&logoColor=white&style=for-the-badge)](https://www.amazon.de/hz/wishlist/ls/3JVWED9SZMDPK?ref_=wl_share)
 
-   **PHUE_SensorStateSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich einen Sensor ein- bzw. auszuschalten.
-   ```php
-   PHUE_SensorStateSet(25537, true); //Einschalten
-   PHUE_SensorStateSet(25537, false); //Ausschalten
-   ```
+## 5. Lizenz
 
-   **PHUE_CLIPSensorStateSet($InstanceID, $Value)**\
-   Mit dieser Funktion ist es möglich einen CLIPGenericStatus Sensor ein- bzw. auszuschalten.
-   Zum Beispiel für die HUE Labs Szenen.
-   ```php
-   PHUE_CLIPSensorStateSet(25537, true); //Einschalten
-   PHUE_CLIPSensorStateSet(25537, false); //Ausschalten
-   ```
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
