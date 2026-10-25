@@ -15,7 +15,7 @@ Feld | Beschreibung
 ------------ | ----------------
 IP-Adresse der HUE Bridge | Adresse der Bridge im Netzwerk.
 Registriere IP-Symcon | Koppelt IP-Symcon mit der Bridge. Vorher muss die Taste an der Bridge gedrückt werden. Das Ergebnis steht als Meldung im Formular.
-Fehlermeldungen | Mit „Fehler 207“ werden Teilfehler der Bridge im Log gemeldet. Mit „Fehler 400 im Debug protokollieren“ werden Antworten mit Fehler 400 im Debug protokolliert, sonst werden sie ohne Meldung verworfen.
+Fehlermeldungen | Mit „Fehler 207“ werden Teilfehler der Bridge im Log gemeldet. Mit „Fehler 400 im Debug protokollieren“ werden Antworten mit Fehler 400 im Debug protokolliert, sonst werden sie ohne Meldung verworfen. Lehnt die Bridge einen Befehl ab (Fehler 400 bei einem Schreibzugriff), steht das immer als Warnung mit dem Grund der Bridge im Log.
 
 ## 2. Funktionen
 

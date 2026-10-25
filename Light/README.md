@@ -43,7 +43,7 @@ Startet einen Effekt der Lampe. Bei einer Dauer von 0 läuft der Effekt dauerhaf
 Startet einen Effekt über die Effects-V2-Schnittstelle der Bridge.
 
 `void PHUE_setColor(integer $InstanzID, integer $Color, array $Opt);`
-Setzt die Farbe mit weiteren Parametern der HUE API. Der Farbwert wird als Ganzzahl übergeben, zum Beispiel als Hexadezimalzahl `0xFF00FF` (gleichbedeutend mit `16711935`). Texte wie `"FF00FF"` oder `"#FF00FF"` werden nicht angenommen.
+Setzt die Farbe mit weiteren Parametern der HUE API. Der Farbwert wird als Ganzzahl übergeben, zum Beispiel als Hexadezimalzahl `0xFF00FF` (gleichbedeutend mit `16711935`). Texte wie `"FF00FF"` oder `"#FF00FF"` werden nicht angenommen. Eine Helligkeit in `$Opt` (`dimming` => `brightness`) wird auf 0 bis 100 begrenzt, weil die Bridge sonst die ganze Anfrage ablehnt.
 
 **Beispiel:** Die Lampe soll auf die Farbe F6B859 mit der Helligkeit 100 und einem Übergang von 45 ms geschaltet werden:
 

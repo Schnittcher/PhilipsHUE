@@ -102,7 +102,7 @@ class HUEGroupedLight extends RessourceModule
         $cie = $this->RGBToXy($RGB);
 
         $params = ['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]]];
-        $params = array_merge($params, $OptParams);
+        $params = array_merge($params, $this->limitBrightness($OptParams));
         $params = json_encode($params);
         $this->SendDebug('setColor :: Params', $params, 0);
         $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', $params);

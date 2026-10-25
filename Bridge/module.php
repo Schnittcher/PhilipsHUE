@@ -213,8 +213,13 @@ class HUEBridge extends IPSModuleStrict
                     }
                     break;
                 case 400:
-                    if ($this->ReadPropertyBoolean('Error400')) {
-                        $this->SendDebug('Philips HUE sendRequest Error', curl_error($ch) . 'HTTP Code: ' . $headerInfo['http_code'], 0);
+                    $result = json_decode((string) $apiResult, true);
+                    $description = $result['errors'][0]['description'] ?? '';
+                    if (in_array($method, ['PUT', 'POST', 'DELETE'])) {
+                        // Ein abgelehnter Befehl wird immer gemeldet, sonst bleibt der Fehler für den Nutzer unsichtbar
+                        $this->LogMessage('Philips HUE: Anfrage ' . $method . ' ' . $endpoint . ' abgelehnt (HTTP 400): ' . $description, KL_WARNING);
+                    } elseif ($this->ReadPropertyBoolean('Error400')) {
+                        $this->SendDebug('Philips HUE sendRequest Error', $description . ' HTTP Code: ' . $headerInfo['http_code'], 0);
                     }
                     break;
                 default:

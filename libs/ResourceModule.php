@@ -151,6 +151,21 @@ class RessourceModule extends IPSModuleStrict
     }
 
     /**
+     * Die HUE API v2 erlaubt für dimming.brightness nur 0 bis 100 und lehnt die ganze Anfrage sonst ab.
+     * Zusätzliche Parameter des Aufrufers werden deshalb auf diesen Bereich begrenzt.
+     */
+    protected function limitBrightness(array $Params): array
+    {
+        if (isset($Params['dimming']['brightness']) && is_numeric($Params['dimming']['brightness'])) {
+            $Brightness = max(0.0, min(100.0, (float) $Params['dimming']['brightness']));
+            if ($Brightness != $Params['dimming']['brightness']) {
+                $this->SendDebug('Brightness limited', $Params['dimming']['brightness'] . ' -> ' . $Brightness, 0);
+            }
+            $Params['dimming']['brightness'] = $Brightness;
+        }
+        return $Params;
+    }
+    /**
      * Liefert zum gespeicherten Profilnamen einer Variable die passende Darstellung.
      * Der Profilname bleibt Schlüssel in der Property "Variables", die Darstellung ersetzt das frühere Variablenprofil.
      * Unbekannte oder leere Profile werden unverändert zurückgegeben.

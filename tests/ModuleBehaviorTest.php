@@ -89,6 +89,32 @@ class ModuleBehaviorTest extends TestCase
         }
     }
 
+    // --- Parameter für die Bridge ---
+
+    public function testBrightnessOfExtraParametersIsLimitedToTheRangeOfTheApi(): void
+    {
+        $light = $this->resource(self::LIGHT);
+
+        // Die Bridge lehnt Werte über 100 samt der ganzen Anfrage ab (Hue API v2: 0 bis 100)
+        $limited = $this->call($light, 'limitBrightness', ['on' => ['on' => true], 'dimming' => ['brightness' => 150], 'dynamics' => ['duration' => 45]]);
+        $this->assertSame(100.0, $limited['dimming']['brightness']);
+        $this->assertSame(['on' => true], $limited['on']);
+        $this->assertSame(['duration' => 45], $limited['dynamics']);
+
+        $this->assertSame(0.0, $this->call($light, 'limitBrightness', ['dimming' => ['brightness' => -5]])['dimming']['brightness']);
+        $this->assertSame(42.5, $this->call($light, 'limitBrightness', ['dimming' => ['brightness' => 42.5]])['dimming']['brightness']);
+        $this->assertSame(100.0, $this->call($light, 'limitBrightness', ['dimming' => ['brightness' => '100']])['dimming']['brightness']);
+    }
+
+    public function testParametersWithoutBrightnessStayUnchanged(): void
+    {
+        $light = $this->resource(self::LIGHT);
+
+        $this->assertSame([], $this->call($light, 'limitBrightness', []));
+        $this->assertSame(['on' => ['on' => true]], $this->call($light, 'limitBrightness', ['on' => ['on' => true]]));
+        $this->assertSame(['dimming' => ['brightness' => 'hell']], $this->call($light, 'limitBrightness', ['dimming' => ['brightness' => 'hell']]));
+    }
+
     // --- Daten der Bridge (SSE und Abfrage) ---
 
     public function testLightTakesStatusFromBridgeData(): void
