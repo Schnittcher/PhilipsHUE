@@ -1,5 +1,11 @@
 # Changelog
 
+## 25.10.2026 - Version 2.0.1
+
+### Fixes
+- `PHUE_setColor` begrenzt eine übergebene Helligkeit auf 0 bis 100, weil die Bridge die Anfrage sonst ablehnt und die Farbe nicht setzt.
+- Lehnt die Bridge einen Befehl ab (Fehler 400), steht das jetzt als Warnung mit dem Grund im Log.
+
 ## 19.10.2026 - Version 2.0
 
 ### Neu
