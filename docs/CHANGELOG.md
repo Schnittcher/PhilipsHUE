@@ -1,6 +1,6 @@
 # Changelog
 
-## 25.10.2026 - Version 2.0.1
+## 28.10.2026 - Version 2.1
 
 ### Neu
 - Neue Variable "Farbe (xy)" (`color_xy`) bei Lampen und Gruppen: Die Farbe in CIE xy, wie sie die Bridge meldet, ohne Umrechnung. Sie ist steuerbar und eignet sich zum genauen Sichern und Wiederherstellen von Farben. Bestehende Instanzen zeigen die Variable nach dem Öffnen und Speichern der Instanz.
