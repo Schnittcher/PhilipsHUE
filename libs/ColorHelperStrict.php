@@ -20,39 +20,49 @@ trait ColorHelperStrict
         return $RGB;
     }
 
-    protected function xyToHEX(float $x, float $y, int|float $bri): string
+    /**
+     * Farbwert (#rrggbb) zu einer Farbe der Bridge in CIE xy.
+     * Die Helligkeit gehört nicht in den Farbwert, sie steht in der eigenen Variable. Die Farbe wird deshalb normalisiert:
+     * Der stärkste Kanal ist voll ausgesteuert und der Farbton bleibt erhalten (kein Abschneiden einzelner Kanäle).
+     * Hinweis: Die Konsole von Symcon färbt xy anders ein (abgeschnitten, deshalb gelblicher). Genau ist color_xy.
+     */
+    protected function xyToHEX(float $x, float $y): string
     {
-
-        // Calculate XYZ values
-        $z = 1 - $x - $y;
-        $Y = $bri / 254; // Brightness coeff.
-        if ($y == 0) {
-            $X = 0;
-            $Z = 0;
-        } else {
-            $X = ($Y / $y) * $x;
-            $Z = ($Y / $y) * $z;
+        if ($y <= 0) {
+            return '#000000';
         }
 
-        // Convert to sRGB D65 (official formula on meethue)
-        // formula 2016
+        // XYZ bei voller Helligkeit (Y = 1)
+        $X = $x / $y;
+        $Y = 1.0;
+        $Z = (1 - $x - $y) / $y;
+
+        // Linear nach sRGB D65 (official formula on meethue, formula 2016)
         $r = $X * 1.656492 - $Y * 0.354851 - $Z * 0.255038;
         $g = -$X * 0.707196 + $Y * 1.655397 + $Z * 0.036152;
         $b = $X * 0.051713 - $Y * 0.121364 + $Z * 1.011530;
+
+        // Farben außerhalb von sRGB haben negative Anteile, sie werden auf 0 gesetzt
+        $r = max(0.0, $r);
+        $g = max(0.0, $g);
+        $b = max(0.0, $b);
+
+        // Normalisieren: der stärkste Kanal wird 1
+        $max = max($r, $g, $b);
+        if ($max > 0) {
+            $r /= $max;
+            $g /= $max;
+            $b /= $max;
+        }
 
         // Apply reverse gamma correction
         $r = ($r <= 0.0031308 ? 12.92 * $r : (1.055) * pow($r, (1 / 2.4)) - 0.055);
         $g = ($g <= 0.0031308 ? 12.92 * $g : (1.055) * pow($g, (1 / 2.4)) - 0.055);
         $b = ($b <= 0.0031308 ? 12.92 * $b : (1.055) * pow($b, (1 / 2.4)) - 0.055);
 
-        // Calculate final RGB
-        $r = ($r < 0 ? 0 : round($r * 255));
-        $g = ($g < 0 ? 0 : round($g * 255));
-        $b = ($b < 0 ? 0 : round($b * 255));
-
-        $r = ($r > 255 ? 255 : $r);
-        $g = ($g > 255 ? 255 : $g);
-        $b = ($b > 255 ? 255 : $b);
+        $r = (int) min(255, max(0, round($r * 255)));
+        $g = (int) min(255, max(0, round($g * 255)));
+        $b = (int) min(255, max(0, round($b * 255)));
 
         $this->SendDebug('RGB', 'R: ' . $r . ' G: ' . $g . ' B: ' . $b, 0);
 
@@ -101,5 +111,41 @@ trait ColorHelperStrict
         $cie['y'] = $y;
         $cie['bri'] = $bri;
         return $cie;
+    }
+    /**
+     * Liest eine Farbe in xy aus dem Wert einer Variable mit der Darstellung Farbe (Kodierung xy): {"x":0.5041,"y":0.4144}.
+     * Liefert null, wenn der Wert keine gültige Farbart ist.
+     */
+    protected function parseXy(mixed $Value): ?array
+    {
+        $Xy = is_string($Value) ? json_decode($Value, true) : null;
+        if (!is_array($Xy) || !isset($Xy['x'], $Xy['y']) || !is_numeric($Xy['x']) || !is_numeric($Xy['y'])) {
+            return null;
+        }
+        $x = (float) $Xy['x'];
+        $y = (float) $Xy['y'];
+        if ($x < 0 || $x > 1 || $y < 0 || $y > 1) {
+            return null;
+        }
+        return ['x' => $x, 'y' => $y];
+    }
+    /**
+     * Pflegt die Variablen "color" und "color_xy" aus den Daten der Bridge. Die Bridge meldet nur, was sich ändert, die Farbe
+     * also nur mit xy. Der Farbwert hängt nicht von der Helligkeit ab, die in der eigenen Variable steht.
+     */
+    protected function updateColor(array $Data): void
+    {
+        $Xy = $Data['color']['xy'] ?? null;
+        if (!is_array($Xy) || !isset($Xy['x'], $Xy['y'])) {
+            return;
+        }
+
+        // Die Farbe in xy, wie sie die Bridge meldet, ohne Umrechnung
+        $this->SetValue('color_xy', json_encode(['x' => (float) $Xy['x'], 'y' => (float) $Xy['y']]));
+
+        $RGB = $this->xyToHEX((float) $Xy['x'], (float) $Xy['y']);
+        if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
+            $this->SetValue('color', hexdec(ltrim($RGB, '#')));
+        }
     }
 }

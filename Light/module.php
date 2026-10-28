@@ -20,6 +20,7 @@ class HUELight extends RessourceModule
         ['on', 'State', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
         ['brightness', 'Brightness', VARIABLETYPE_INTEGER, '~Intensity.100', true, true],
         ['color', 'Color', VARIABLETYPE_INTEGER, '~HexColor', true, true],
+        ['color_xy', 'Color XY', VARIABLETYPE_STRING, 'PhilipsHUE.ColorXY', true, true],
         ['color_temperature', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperature', true, true],
         ['color_temperature_kelvin', 'Color Temperature Kelvin', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperatureKelvin', true, true],
         ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true]
@@ -29,7 +30,6 @@ class HUELight extends RessourceModule
     {
         parent::Create();
 
-        $this->RegisterAttributeInteger('tmpBrightness', 0);
     }
 
     public function RequestAction(string $Ident, mixed $Value): void
@@ -63,9 +63,17 @@ class HUELight extends RessourceModule
                 $RGB = $this->HexToRGB((int) $Value);
                 $this->SendDebug('RGB', $RGB, 0);
                 $cie = $this->RGBToXy($RGB);
-                $this->WriteAttributeInteger('tmpBrightness', $cie['bri']);
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
                 //$this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dimming' => ['brightness' => $cie['bri']], 'dynamics' => ['duration' => $duration]]));
+                break;
+            case 'color_xy':
+                $Xy = $this->parseXy($Value);
+                if ($Xy === null) {
+                    $this->SendDebug('color_xy', 'Invalid value: ' . json_encode($Value), 0);
+                    break;
+                }
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode(['on' => ['on' => true], 'color' => ['xy' => $Xy], 'dynamics' => ['duration' => $duration]]));
                 break;
         }
     }
@@ -130,13 +138,6 @@ class HUELight extends RessourceModule
             }
         }
 
-        if (array_key_exists('color', $Data)) {
-            if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], $this->ReadAttributeInteger('tmpBrightness'));
-                if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
-                    $this->SetValue('color', hexdec(ltrim($RGB, '#')));
-                }
-            }
-        }
+        $this->updateColor($Data);
     }
 }

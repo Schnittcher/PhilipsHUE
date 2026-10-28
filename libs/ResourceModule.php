@@ -179,6 +179,15 @@ class RessourceModule extends IPSModuleStrict
                 return ['PRESENTATION' => self::PRESENTATION_SLIDER, 'MIN' => 0, 'MAX' => 100, 'STEP_SIZE' => 1, 'USAGE_TYPE' => 2, 'SUFFIX' => ' %'];
             case '~HexColor':
                 return ['PRESENTATION' => self::PRESENTATION_COLOR];
+            case 'PhilipsHUE.ColorXY':
+                // Farbe in xy (Text mit {"x":..,"y":..}), Farbraum der Hue-Lampen (Gamut C), Auswahl im CIE-Diagramm
+                return [
+                    'PRESENTATION'       => self::PRESENTATION_COLOR,
+                    'ENCODING'           => 4,
+                    'SELECTION'          => 1,
+                    'COLOR_SPACE'        => 0,
+                    'CUSTOM_COLOR_SPACE' => json_encode([['x' => 0.6915, 'y' => 0.3083], ['x' => 0.17, 'y' => 0.7], ['x' => 0.1532, 'y' => 0.0475], ['x' => 0.3127, 'y' => 0.329]])
+                ];
             case 'PhilipsHUE.ColorTemperature':
                 return ['PRESENTATION' => self::PRESENTATION_SLIDER, 'MIN' => 153, 'MAX' => 500, 'STEP_SIZE' => 1, 'USAGE_TYPE' => 1, 'GRADIENT_TYPE' => 4, 'SUFFIX' => ' mired'];
             case 'PhilipsHUE.ColorTemperatureKelvin':

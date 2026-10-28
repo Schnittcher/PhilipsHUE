@@ -18,6 +18,7 @@ class HUEGroupedLight extends RessourceModule
         ['on', 'State', VARIABLETYPE_BOOLEAN, '~Switch', true, true],
         ['brightness', 'Brightness', VARIABLETYPE_INTEGER, '~Intensity.100', true, true],
         ['color', 'Color', VARIABLETYPE_INTEGER, '~HexColor', true, true],
+        ['color_xy', 'Color XY', VARIABLETYPE_STRING, 'PhilipsHUE.ColorXY', true, true],
         ['color_temperature', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperature', true, true],
         ['color_temperature_kelvin', 'Color Temperature', VARIABLETYPE_INTEGER, 'PhilipsHUE.ColorTemperatureKelvin', true, true],
         ['transition', 'Transition', VARIABLETYPE_INTEGER, 'PhilipsHUE.Transition', true, true],
@@ -81,7 +82,20 @@ class HUEGroupedLight extends RessourceModule
                 $this->SendDebug('Color', $cie, 0);
                 $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => true], 'color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]], 'dynamics' => ['duration' => $duration]]));
                 if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
-                    $this->SetValue('color', $Value);
+                    // Wie eine Meldung der Bridge: beide Farbvariablen aus xy und der aktuellen Helligkeit setzen
+                    $this->updateColor(['color' => ['xy' => ['x' => $cie['x'], 'y' => $cie['y']]]]);
+                }
+                break;
+            case 'color_xy':
+                $Xy = $this->parseXy($Value);
+                if ($Xy === null) {
+                    $this->SendDebug('color_xy', 'Invalid value: ' . json_encode($Value), 0);
+                    break;
+                }
+                $duration = $this->GetValue('transition') != false ? $this->GetValue('transition') : 0;
+                $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['on' => ['on' => true], 'color' => ['xy' => $Xy], 'dynamics' => ['duration' => $duration]]));
+                if ($this->ReadPropertyBoolean('stausColorColorTemperature')) {
+                    $this->updateColor(['color' => ['xy' => $Xy]]);
                 }
                 break;
             case 'scene':
@@ -161,14 +175,7 @@ class HUEGroupedLight extends RessourceModule
             }
         }
 
-        if (array_key_exists('color', $Data)) {
-            if (array_key_exists('xy', $Data['color'])) {
-                $RGB = $this->xyToHEX($Data['color']['xy']['x'], $Data['color']['xy']['y'], (int) $this->GetValue('brightness'));
-                if (preg_match('/^#[a-f0-9]{6}$/i', strval($RGB))) {
-                    $this->SetValue('color', hexdec(ltrim($RGB, '#')));
-                }
-            }
-        }
+        $this->updateColor($Data);
     }
 
     private function getScenesbyGroup()

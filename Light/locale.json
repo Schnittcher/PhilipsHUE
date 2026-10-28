@@ -15,6 +15,7 @@
             "State": "Status",
             "Brightness": "Helligkeit",
             "Color": "Farbe",
+            "Color XY": "Farbe (xy)",
             "Color Temperature": "Farbtemperatur",
             "Color Temperature Kelvin": "Farbtemperatur Kelvin",
             "Transition": "Übergang",
