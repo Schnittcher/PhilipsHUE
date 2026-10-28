@@ -18,7 +18,7 @@ HUE Raum-/Zonen-ID | ID des Raums oder der Zone. Wird vom Konfigurator gesetzt.
 HUE Ressourcen-ID | ID der HUE-Ressource. Wird vom Konfigurator gesetzt.
 Variablen | Liste der Variablen der Instanz. Mit „Aktiv“ lassen sich einzelne Variablen abwählen.
 Aktualisiere Szenenprofil | Liest die Szenen der Gruppe von der Bridge und füllt die Auswahl der Variable „Szene“.
-Status für Farbe und Farbtemperatur simulieren | Setzt die Variablen für Farbe und Farbtemperatur nach einer Aktion, weil die Bridge für Gruppen diese Werte nicht zurückmeldet.
+Status für Farbe und Farbtemperatur simulieren | Setzt die Variablen für Farbe (Farbwert und xy) und Farbtemperatur nach einer Aktion, weil die Bridge für Gruppen diese Werte nicht zurückmeldet.
 Geräteinformationen abrufen | Fragt die Informationen der Ressource bei der Bridge ab (Ausgabe im Debug).
 
 ## 2. Variablen
@@ -28,7 +28,8 @@ Variable | Ident | Typ | Beschreibung
 ------------ | ------------ | ------------ | ----------------
 Status | `on` | Ja/Nein | Schaltet ein oder aus. Steuerbar.
 Helligkeit | `brightness` | Ganzzahl | Helligkeit in Prozent (0 bis 100). Ein Wert über 0 schaltet ein, 0 schaltet aus. Steuerbar.
-Farbe | `color` | Ganzzahl | Farbwert (RGB). Steuerbar.
+Farbe | `color` | Ganzzahl | Farbwert (RGB) der aktuellen Farbe, unabhängig von der Helligkeit (sie steht in der Variable „Helligkeit“). Der hellste Kanal ist voll ausgesteuert, der Farbton entspricht der Lampe. Die Konsole von Symcon färbt die Zelle von „Farbe (xy)“ anders ein (abgeschnitten) und zeigt sie gelblicher. Zum genauen Sichern und Wiederherstellen dient `color_xy`. Steuerbar.
+Farbe (xy) | `color_xy` | Text | Farbe in CIE xy, wie sie die Bridge meldet, zum Beispiel `{"x":0.5041,"y":0.4144}`. Ohne Umrechnung und unabhängig von der Helligkeit, ideal zum Sichern und Wiederherstellen von Farben. Wird mit der Darstellung Farbe (Kodierung xy) angezeigt. Steuerbar: Beim Schreiben wird die Farbe an die Bridge gesendet, die Helligkeit bleibt unverändert.
 Farbtemperatur | `color_temperature` | Ganzzahl | Farbtemperatur in Mired (153 bis 500). Steuerbar.
 Farbtemperatur | `color_temperature_kelvin` | Ganzzahl | Farbtemperatur in Kelvin (2000 bis 6535). Steuerbar.
 Übergang | `transition` | Ganzzahl | Übergangszeit in Millisekunden, die bei der nächsten Aktion verwendet wird. Steuerbar.
