@@ -10,6 +10,7 @@
 - Lehnt die Bridge einen Befehl ab (Fehler 400), steht das jetzt als Warnung mit dem Grund im Log.
 - Die Farbvariable von Lampen und Gruppen zeigt jetzt zuverlässig die Farbe der Bridge, auch wenn die Lampe außerhalb von IP-Symcon geändert wurde (vorher Schwarz oder falsche Werte). Der Farbwert hängt nicht mehr von der Helligkeit ab (sie steht in der eigenen Variable), der Farbton wird nicht mehr durch Abschneiden einzelner Kanäle verfälscht. Hinweis: Die Konsole von Symcon zeigt die Zelle von „Farbe (xy)“ gelblicher als den Farbwert, weil sie die Farbe abschneidet. Zum genauen Sichern und Wiederherstellen von Farben dient „Farbe (xy)“.
 - Bei Gruppen mit der Einstellung "Status für Farbe und Farbtemperatur simulieren" bekommen der Farbwert und die Farbe (xy) nach einer Aktion denselben Wert wie bei einer Meldung der Bridge.
+- Der Dokumentationslink der Instanzen führt jetzt zur Dokumentation auf deinsmarthome.info.
 
 ## 25.10.2026 - Version 2.0.1
 
