@@ -95,7 +95,7 @@ class HUEGroupedLight extends RessourceModule
         $this->sendData($this->ReadPropertyString('ResourceID'), 'grouped_light', json_encode(['alert' => ['action' => 'breathe']]));
     }
 
-    public function setColor($color, $OptParams)
+    public function setColor(int $color, $OptParams)
     {
         $RGB = $this->HexToRGB($color);
         $this->SendDebug('RGB', $RGB, 0);

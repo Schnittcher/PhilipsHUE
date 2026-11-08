@@ -93,7 +93,7 @@ class HUELight extends RessourceModule
         $this->sendData($this->ReadPropertyString('ResourceID'), 'light', json_encode($params));
     }
 
-    public function setColor($color, $OptParams)
+    public function setColor(int $color, $OptParams)
     {
         $RGB = $this->HexToRGB($color);
         $this->SendDebug('RGB', $RGB, 0);
