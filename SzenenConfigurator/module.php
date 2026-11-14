@@ -14,7 +14,6 @@ class HUESceneConfigurator extends IPSModuleStrict
         //Never delete this line!
         parent::Create();
         $this->RegisterPropertyString('Serialnumber', '');
-        $this->RegisterPropertyInteger('TargetCategory', 0);
     }
 
     public function ApplyChanges(): void
@@ -63,8 +62,7 @@ class HUESceneConfigurator extends IPSModuleStrict
                     'configuration' => [
                         'ResourceID'        => strval($Scene['id']),
                     ],
-                    'name'     => $RoomName . ' ' . $Scene['metadata']['name'] . ' ' . ucfirst($Scene['type']),
-                    'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
+                    'name'     => $RoomName . ' ' . $Scene['metadata']['name'] . ' ' . ucfirst($Scene['type'])
                 ]
             ];
         }
@@ -87,23 +85,6 @@ class HUESceneConfigurator extends IPSModuleStrict
             return [];
         }
         return $result;
-    }
-
-    private function getPathOfCategory(int $categoryId): array
-    {
-        if ($categoryId === 0) {
-            return [];
-        }
-
-        $path[] = IPS_GetName($categoryId);
-        $parentId = IPS_GetObject($categoryId)['ParentID'];
-
-        while ($parentId > 0) {
-            $path[] = IPS_GetName($parentId);
-            $parentId = IPS_GetObject($parentId)['ParentID'];
-        }
-
-        return array_reverse($path);
     }
 
     private function getInstanceID($sID)

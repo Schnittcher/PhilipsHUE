@@ -13,7 +13,6 @@
 Feld | Beschreibung
 ------------ | ----------------
 Seriennummer | Seriennummer der Bridge.
-Zielkategorie | Kategorie, in der die neuen Instanzen angelegt werden.
 Konfigurator | Liste der Zonen. Über „Erstellen“ wird die Gruppen-Instanz angelegt.
 
 ## 2. Spenden

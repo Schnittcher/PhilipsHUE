@@ -1,5 +1,10 @@
 # Changelog
 
+## 14.11.2026 - Version 2.1.1
+
+### Fixes
+- Die Konfiguratoren haben keine eigene Einstellung „Zielkategorie“ mehr, das Ziel für neue Instanzen wählt man in der Konsole. Vorher konnten neue Instanzen in einem falschen, verschachtelten Ordner landen.
+
 ## 28.10.2026 - Version 2.1
 
 ### Neu

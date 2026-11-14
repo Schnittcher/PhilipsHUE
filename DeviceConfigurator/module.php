@@ -25,7 +25,6 @@ class HUEDeviceConfigurator extends IPSModuleStrict
         //Never delete this line!
         parent::Create();
         $this->RegisterPropertyString('Serialnumber', '');
-        $this->RegisterPropertyInteger('TargetCategory', 0);
     }
 
     public function ApplyChanges(): void
@@ -95,8 +94,7 @@ class HUEDeviceConfigurator extends IPSModuleStrict
                             'DeviceID'      => strval($Device['id']),
                             'ResourceID'    => strval($Service['rid']),
                         ],
-                        'name'     => $Device['metadata']['name'] . ' ' . ucfirst($Service['rtype']),
-                        'location' => $this->getPathOfCategory($this->ReadPropertyInteger('TargetCategory'))
+                        'name'     => $Device['metadata']['name'] . ' ' . ucfirst($Service['rtype'])
                     ];
                 }
 
@@ -122,23 +120,6 @@ class HUEDeviceConfigurator extends IPSModuleStrict
             return [];
         }
         return $result;
-    }
-
-    private function getPathOfCategory(int $categoryId): array
-    {
-        if ($categoryId === 0) {
-            return [];
-        }
-
-        $path[] = IPS_GetName($categoryId);
-        $parentId = IPS_GetObject($categoryId)['ParentID'];
-
-        while ($parentId > 0) {
-            $path[] = IPS_GetName($parentId);
-            $parentId = IPS_GetObject($parentId)['ParentID'];
-        }
-
-        return array_reverse($path);
     }
 
     private function getInstanceID($dID, $rID)

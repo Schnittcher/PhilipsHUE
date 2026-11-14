@@ -13,7 +13,6 @@
 Feld | Beschreibung
 ------------ | ----------------
 Seriennummer | Seriennummer der Bridge.
-Zielkategorie | Kategorie, in der die neuen Instanzen angelegt werden.
 Konfigurator | Liste der Geräte und ihrer Ressourcen. Über „Erstellen“ wird die Instanz angelegt.
 
 ## 2. Spenden

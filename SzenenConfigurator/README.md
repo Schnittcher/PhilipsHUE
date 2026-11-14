@@ -13,7 +13,6 @@
 Feld | Beschreibung
 ------------ | ----------------
 Seriennummer | Seriennummer der Bridge.
-Zielkategorie | Kategorie, in der die neuen Instanzen angelegt werden.
 Konfigurator | Liste der Szenen mit Raum. Über „Erstellen“ wird die Szenen-Instanz angelegt.
 
 ## 2. Spenden
